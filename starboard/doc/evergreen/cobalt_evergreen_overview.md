@@ -689,7 +689,7 @@ list of available command-line flags.
 
 ### Platform Security
 
-{# disableFinding(LINK_DOCS) #}LintDevSiteLinter_md
+<!-- disableFinding(LINK_DOCS) -->
 As Cobalt binary packages ([CRX
 format](https://docs.google.com/document/d/1pAVB4y5EBhqufLshWMcvbQ5velk0yMGl5ynqiorTCG4/edit#heading=h.ke61kmpkapku))
 are downloaded from the Google Downloads server, the verification of the Cobalt
