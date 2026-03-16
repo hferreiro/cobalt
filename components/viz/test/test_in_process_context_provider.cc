@@ -76,11 +76,11 @@ gpu::ContextResult TestInProcessContextProvider::BindToCurrentSequence() {
         gpu::SharedMemoryLimits());
 // TODO(sherryzy): Investigate why this ContextResult check fails
 // specifically in single-process-test mode.
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
     CHECK_EQ(result, gpu::ContextResult::kSuccess);
 #else
     (void)result;
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
     caps_ = gles2_context_->GetCapabilities();
   } else {
@@ -97,11 +97,11 @@ gpu::ContextResult TestInProcessContextProvider::BindToCurrentSequence() {
 
 // TODO(sherryzy): Investigate why this ContextResult check fails
 // specifically in single-process-test mode.
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
     CHECK_EQ(result, gpu::ContextResult::kSuccess);
 #else
     (void)result;
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
     caps_ = raster_context_->GetCapabilities();
     CHECK_EQ(caps_.gpu_rasterization, is_gpu_raster);

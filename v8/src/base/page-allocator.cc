@@ -125,7 +125,7 @@ PageAllocator::AllocateSharedPages(size_t size, const void* original_address) {
 
 void* PageAllocator::RemapShared(void* old_address, void* new_address,
                                  size_t size) {
-#if defined(V8_OS_LINUX) && !BUILDFLAG(IS_STARBOARD)
+#if defined(V8_OS_LINUX) && !BUILDFLAG(USE_STARBOARD)
   return base::OS::RemapShared(old_address, new_address, size);
 #else
   return nullptr;

@@ -79,7 +79,7 @@ typedef HANDLE FileHandle;
 typedef FILE* FileHandle;
 #endif
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include <fcntl.h>
 
 #include "starboard/common/log.h"  // nogncheck
@@ -323,7 +323,7 @@ void DeleteFilePath(const PathString& log_name) {
 }
 
 PathString GetDefaultLogFile() {
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // On Starboard, we politely ask for the log directory, like a civilized
   // platform.
   std::vector<char> path(kSbFileMaxPath + 1);
@@ -385,7 +385,7 @@ bool InitializeLogFileHandle() {
     g_log_file_name = new PathString(GetDefaultLogFile());
   }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // This seems to get called a lot with an empty filename, at least in
   // base_unittests.
   if (g_log_file_name->empty()) {
@@ -465,7 +465,7 @@ void CloseLogFileUnlocked() {
     g_logging_destination &= ~LOG_TO_FILE;
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 SbLogPriority LogLevelToStarboardLogPriority(int level) {
   switch (level) {
     case LOG_INFO:
@@ -488,7 +488,7 @@ SbLogPriority LogLevelToStarboardLogPriority(int level) {
       return kSbLogPriorityInfo;
   }
 }
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
 #if BUILDFLAG(IS_FUCHSIA)
 inline FuchsiaLogSeverity LogSeverityToFuchsiaLogSeverity(
@@ -513,7 +513,7 @@ inline FuchsiaLogSeverity LogSeverityToFuchsiaLogSeverity(
 }
 #endif  // BUILDFLAG(IS_FUCHSIA)
 
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
 void WriteToFd(int fd, const char* data, size_t length) {
   size_t bytes_written = 0;
   long rv;
@@ -963,7 +963,7 @@ LogMessage::~LogMessage() {
     //   LOG(ERROR) << "Something went wrong";
     //   free_something();
     // }
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     SbLog(LogLevelToStarboardLogPriority(severity_), str_newline.c_str());
 #else
     WriteToFd(STDERR_FILENO, str_newline.data(), str_newline.size());
@@ -1060,7 +1060,7 @@ void LogMessage::Init(const char* file, int line) {
     if (g_log_process_id)
       stream_ << base::GetUniqueIdForProcess() << ':';
     if (g_log_thread_id)
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       // Logging the thread name is added for Starboard logs.
       stream_ << base::PlatformThread::GetName() << '/'
               << base::PlatformThread::CurrentId() << ":";
@@ -1122,7 +1122,7 @@ typedef DWORD SystemErrorCode;
 #endif
 
 SystemErrorCode GetLastSystemErrorCode() {
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   return SbSystemGetLastError();
 #elif BUILDFLAG(IS_WIN)
   return ::GetLastError();
@@ -1132,7 +1132,7 @@ SystemErrorCode GetLastSystemErrorCode() {
 }
 
 BASE_EXPORT std::string SystemErrorCodeToString(SystemErrorCode error_code) {
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   const int kErrorMessageBufferSize = 256;
   char msgbuf[kErrorMessageBufferSize];
 
@@ -1270,7 +1270,7 @@ void ScopedLoggingSettings::SetLogFormat(LogFormat log_format) const {
 
 void RawLog(int level, const char* message) {
   if (level >= g_min_log_level && message) {
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     SbLogRaw(message);
     const size_t message_len = strlen(message);
     if (message_len > 0 && message[message_len - 1] != '\n') {

@@ -142,7 +142,7 @@ static void EnterLayerOneSandbox(sandbox::policy::SandboxLinux* linux_sandbox,
 // It's not just our code which may do so - some system-installed libraries
 // are known to be culprits, e.g. lttng.
 // TODO: (cobalt b/393131403) Investigate clean way to turn off Zygote support.
-#if !defined(THREAD_SANITIZER) && !BUILDFLAG(IS_STARBOARD)
+#if !defined(THREAD_SANITIZER) && !BUILDFLAG(USE_STARBOARD)
   CHECK(sandbox::ThreadHelpers::IsSingleThreaded());
 #endif
 
@@ -161,7 +161,7 @@ static void EnterLayerOneSandbox(sandbox::policy::SandboxLinux* linux_sandbox,
 
 bool ZygoteMain(
     std::vector<std::unique_ptr<ZygoteForkDelegate>> fork_delegates) {
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
   sandbox::SetAmZygoteOrRenderer(true, GetSandboxFD());
 #endif
 

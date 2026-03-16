@@ -1037,12 +1037,12 @@ component("base") {
     ]
   }
 
-  if ((is_linux && !is_starboard) || is_chromeos || is_android) {
+  if ((is_linux && !use_starboard) || is_chromeos || is_android) {
     sources += [
       "files/file_path_watcher_inotify.cc",
       "files/file_path_watcher_inotify.h",
     ]
-  } else if (is_starboard) {
+  } else if (use_starboard) {
     sources += [
       "files/file_path_watcher_stub.cc",
     ]
@@ -1728,7 +1728,7 @@ component("base") {
         "profiler/thread_delegate_posix.h",
       ]
 
-      if (is_starboard) {
+      if (use_starboard) {
         sources -= ["native_library_posix.cc"]
         sources += ["native_library_starboard.cc"]
       }
@@ -1809,7 +1809,7 @@ component("base") {
     }
   }
 
-  if (is_starboard) {
+  if (use_starboard) {
     sources -= [ "process/launch_posix.cc" ]
     sources += [
       "message_loop/message_pump_ui_starboard.cc",
@@ -2962,7 +2962,7 @@ static_library("base_static") {
     configs += [ "//build/config/compiler:optimize_max" ]
   }
 
-  if (is_starboard) {
+  if (use_starboard) {
     deps += [ "//starboard/common" ]
   }
 }
@@ -3914,7 +3914,7 @@ test("base_unittests") {
     deps += [ "//build/rust:cxx_cppdeps" ]
   }
 
-  if (is_starboard) {
+  if (use_starboard) {
     deps += [
       "//starboard:starboard_group",
       "//starboard/common",
@@ -4071,7 +4071,7 @@ test("base_unittests") {
     }
   }
 
-  if (is_starboard) {
+  if (use_starboard) {
     sources -= [
       "debug/stack_trace_unittest.cc",
       "files/file_path_watcher_unittest.cc",
@@ -4124,12 +4124,12 @@ test("base_unittests") {
       "posix/file_descriptor_shuffle_unittest.cc",
       "posix/unix_domain_socket_unittest.cc",
     ]
-    if (is_starboard) {
+    if (use_starboard) {
       sources -= [
         "posix/unix_domain_socket_unittest.cc",
       ]
     }
-    if (!is_nacl && !is_apple && !is_starboard) {
+    if (!is_nacl && !is_apple && !use_starboard) {
       sources += [
         "profiler/stack_base_address_posix_unittest.cc",
         "profiler/stack_copier_signal_unittest.cc",
@@ -4409,7 +4409,7 @@ test("base_unittests") {
     ]
   }
 
-  if (!is_fuchsia && !is_ios && !is_starboard) {
+  if (!is_fuchsia && !is_ios && !use_starboard) {
     sources += [ "files/file_locking_unittest.cc" ]
   }
 

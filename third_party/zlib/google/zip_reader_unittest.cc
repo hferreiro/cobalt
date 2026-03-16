@@ -120,7 +120,7 @@ class MockWriterDelegate : public zip::WriterDelegate {
   MOCK_METHOD1(SetTimeModified, void(const base::Time&));
   MOCK_METHOD1(SetPosixFilePermissions, void(int));
   MOCK_METHOD0(OnError, void());
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   MOCK_METHOD0(Flush, bool());
 #endif
 };
@@ -842,7 +842,7 @@ TEST_F(ZipReaderTest, ExtractCurrentEntryWriteBytesFailure) {
   ASSERT_FALSE(reader.ExtractCurrentEntry(&mock_writer));
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 // Test that when WriterDelegate::Flush returns false the extraction fails.
 TEST_F(ZipReaderTest, ExtractCurrentEntryFlushFailure) {
   testing::StrictMock<MockWriterDelegate> mock_writer;
@@ -875,7 +875,7 @@ TEST_F(ZipReaderTest, ExtractCurrentEntrySuccess) {
   EXPECT_CALL(mock_writer, SetPosixFilePermissions(_));
   EXPECT_CALL(mock_writer, SetTimeModified(_));
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   EXPECT_CALL(mock_writer, Flush()).WillOnce(Return(true));
 #endif
 

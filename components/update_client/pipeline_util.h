@@ -13,7 +13,7 @@ namespace base {
 class FilePath;
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "components/update_client/pipeline.h"
 #endif
 
@@ -21,7 +21,7 @@ namespace update_client {
 
 // Convenience function to make a simple event for an operation
 // from the error contained by a base::expected, if one exists.
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 base::Value::Dict MakeSimpleOperationEvent(
     base::expected<OperationResult, CategorizedError> result,
     const int operation_type);

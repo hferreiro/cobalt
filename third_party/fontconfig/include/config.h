@@ -69,9 +69,9 @@
 #define HAVE_MMAP 1
 
 // TODO: b/428969097 - Cobalt: Investigate removing this condition
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
 #define HAVE_POSIX_FADVISE 1
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif // BUILDFLAG(USE_STARBOARD)
 
 #define HAVE_PTHREAD 1
 

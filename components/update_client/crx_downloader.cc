@@ -25,7 +25,7 @@
 #include "components/update_client/url_fetcher_downloader.h"
 #include "components/update_client/utils.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "base/logging.h"
 
 // TODO(b/448186580): Replace LOG with D(V)LOG
@@ -67,7 +67,7 @@ base::OnceClosure CrxDownloader::StartDownloadFromUrl(
     std::string* dst,
 #endif                                        
     DownloadCallback download_callback) {
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   LOG(INFO) << "CrxDownloader::StartDownloadFromUrl: url=" << url;
 #endif
   std::vector<GURL> urls;
@@ -123,7 +123,7 @@ base::OnceClosure CrxDownloader::StartDownload(
 #endif
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 void CrxDownloader::CancelDownload() {
   LOG(INFO) << "CrxDownloader::CancelDownload";
   DoCancelDownload();
@@ -135,7 +135,7 @@ void CrxDownloader::OnDownloadComplete(
     const Result& result,
     const DownloadMetrics& download_metrics) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   LOG(INFO) << "CrxDownloader::OnDownloadComplete";
 #endif
 
@@ -154,7 +154,7 @@ void CrxDownloader::OnDownloadComplete(
 
   CHECK_EQ(0, download_metrics.error);
   CHECK(is_handled);
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   LOG(INFO) << "CrxDownloader::OnDownloadComplete, verifying response";
 #endif
 
@@ -173,13 +173,13 @@ void CrxDownloader::OnDownloadComplete(
             if (VerifyFileHash256(filepath, expected_hash))
 #endif
               return CrxDownloaderError::NONE;
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #if !defined(IN_MEMORY_UPDATES)
             base::DeleteFile(filepath);
 #endif  // !defined(IN_MEMORY_UPDATES)
-#else  // BUILDFLAG(IS_STARBOARD)
+#else   // BUILDFLAG(USE_STARBOARD)
             DeleteFileAndEmptyParentDirectory(filepath);
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
             return CrxDownloaderError::BAD_HASH;
           },
 #if defined(IN_MEMORY_UPDATES)
@@ -235,13 +235,13 @@ void CrxDownloader::HandleDownloadError(
 #endif
   CHECK_NE(0, download_metrics.error);
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   LOG(INFO) << "CrxDownloader::HandleDownloadError";
 #endif
 
   download_metrics_.push_back(download_metrics);
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   if (result.error != static_cast<int>(CrxDownloaderError::SLOT_UNAVAILABLE)) {
 #endif
   // If an error has occured, try the next url if there is any,
@@ -277,7 +277,7 @@ void CrxDownloader::HandleDownloadError(
     return;
   }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   }
 #endif
   // The download ends here since there is no url nor downloader to handle this

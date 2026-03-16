@@ -51,7 +51,7 @@
 #include "components/update_client/update_engine.h"
 #include "components/update_client/utils.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "components/update_client/crx_downloader_factory.h"
 #include "components/update_client/cobalt_slot_management.h"
 #endif
@@ -130,7 +130,7 @@ void Component::Handle(CallbackHandleComplete callback_handle_complete) {
       base::BindOnce(&Component::ChangeState, base::Unretained(this)));
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 void Component::Cancel() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   is_cancelled_ = true;
@@ -140,7 +140,7 @@ void Component::Cancel() {
 
 void Component::ChangeState(std::unique_ptr<State> next_state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   LOG(INFO) << "Component::ChangeState next_state="
     << ((next_state)? next_state->state_name(): "nullptr");
 #endif
@@ -289,7 +289,7 @@ void Component::AppendEvent(base::Value::Dict event) {
 
 void Component::NotifyObservers() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   if (is_cancelled_) {
     LOG(WARNING) << "Component::NotifyObservers: skip callback";
     return;
@@ -362,7 +362,7 @@ void Component::State::Handle(CallbackNextState callback_next_state) {
   DoHandle();
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 void Component::State::Cancel() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Further work may be needed to ensure cancellation during any state results
@@ -373,7 +373,7 @@ void Component::State::Cancel() {
 void Component::State::TransitionState(std::unique_ptr<State> next_state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(next_state);
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   LOG(INFO) << "Component::State::TransitionState next_state="
     << ((next_state)? next_state->state_name(): "nullptr");
 #endif
@@ -502,7 +502,7 @@ void Component::StateUpdateError::DoHandle() {
   CHECK_NE(ErrorCategory::kNone, component.error_category_);
   CHECK_NE(0, component.error_code_);
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // Create an event when the server response included an update, or when it's
   // an update check error, like quick roll-forward or out of space
   if (component.IsUpdateAvailable() ||
@@ -591,7 +591,7 @@ Component::StateDownloading::~StateDownloading() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 void Component::StateDownloading::Cancel() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   crx_downloader_->CancelDownload();
@@ -607,7 +607,7 @@ void Component::StateDownloading::DoHandle() {
   component.downloaded_bytes_ = -1;
   component.total_bytes_ = -1;
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   crx_downloader_ = component.config()->GetCrxDownloaderFactory()->MakeCrxDownloader(
           component.config());
 #else
@@ -667,7 +667,7 @@ void Component::StateDownloading::DownloadComplete(
   component.payload_path_ = download_result.response;
 #endif
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   component.installation_index_ = download_result.installation_index;
 #endif
 

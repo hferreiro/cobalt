@@ -16,7 +16,7 @@
 #include "components/update_client/crx_downloader.h"
 #include "components/update_client/update_engine.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "components/update_client/pipeline.h"
 #endif
 
@@ -50,7 +50,7 @@ base::OnceClosure DownloadOperation(
     const std::string* crx_str,
 #endif
     CrxDownloader::ProgressCallback progress_callback,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     const OperationResult& file,
     base::OnceCallback<void(base::expected<OperationResult, CategorizedError>)>
 #else

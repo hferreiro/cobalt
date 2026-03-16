@@ -28,7 +28,7 @@
 #include "base/nix/xdg_util.h"
 #endif
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "starboard/configuration_constants.h"  // nogncheck
 #include "starboard/system.h"                   // nogncheck
 #endif
@@ -38,7 +38,7 @@ namespace content {
 namespace {
 
 bool GetDefaultUserDataDirectory(base::FilePath* result) {
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   std::vector<char> path(kSbFileMaxPath, 0);
   bool success =
       SbSystemGetPath(kSbSystemPathFilesDirectory, path.data(), path.size());

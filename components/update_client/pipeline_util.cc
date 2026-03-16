@@ -11,7 +11,7 @@
 
 namespace update_client {
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 base::Value::Dict MakeSimpleOperationEvent(
     base::expected<OperationResult, CategorizedError> result,
     const int operation_type) {

@@ -25,7 +25,7 @@
 #include "starboard/android/shared/text_to_speech_helper.h"
 #endif
 
-#if BUILDFLAG(IS_STARBOARD) || BUILDFLAG(IS_IOS_TVOS)
+#if BUILDFLAG(USE_STARBOARD) || BUILDFLAG(IS_IOS_TVOS)
 #include "starboard/extension/accessibility.h"
 #include "starboard/system.h"
 #endif
@@ -60,7 +60,7 @@ void H5vccAccessibilityImpl::Create(
 void H5vccAccessibilityImpl::IsTextToSpeechEnabledSync(
     IsTextToSpeechEnabledSyncCallback callback) {
   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-#if BUILDFLAG(IS_STARBOARD) || BUILDFLAG(IS_IOS_TVOS)
+#if BUILDFLAG(USE_STARBOARD) || BUILDFLAG(IS_IOS_TVOS)
   auto accessibility_api =
       static_cast<const StarboardExtensionAccessibilityApi*>(
           SbSystemGetExtension(kStarboardExtensionAccessibilityName));

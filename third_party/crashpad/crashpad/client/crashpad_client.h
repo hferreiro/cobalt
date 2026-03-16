@@ -46,9 +46,9 @@
 #include "handler/user_stream_data_source.h"  // nogncheck
 #endif
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "starboard/elf_loader/evergreen_info.h"
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
 namespace crashpad {
 
@@ -370,7 +370,7 @@ class CrashpadClient {
   //!     path as its `--metrics-dir` argument.
   //! \param[in] url The URL of an upload server. The handler will be started
   //!     with this URL as its `--url` argument.
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   //! \param[in] ca_certificates_path The absolute path to a directory
   //!     containing trusted Certificate Authority (CA) root certificates. The
   //!     handler will be started with this path as its `--ca-certificates-path`
@@ -393,14 +393,14 @@ class CrashpadClient {
       const base::FilePath& database,
       const base::FilePath& metrics_dir,
       const std::string& url,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       const base::FilePath& ca_certificates_path,
 #endif
       const std::map<std::string, std::string>& annotations,
       const std::vector<std::string>& arguments,
       const std::vector<base::FilePath>& attachments = {});
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   //! \brief Sends mapping info to the handler
   //!
   //! A handler must have already been installed before calling this method.
@@ -424,7 +424,7 @@ class CrashpadClient {
   //! TODO: b/452049007 - Cobalt: remove this custom API if we're able to move
   //! all client use cases onto Chromium's crash keys.
   static bool InsertAnnotationForHandler(const char* key, const char* value);
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
   //! \brief Starts a handler process with an initial client.
   //!

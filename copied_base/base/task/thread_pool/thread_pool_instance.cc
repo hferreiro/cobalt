@@ -14,7 +14,7 @@
 #include "base/threading/platform_thread.h"
 #include "base/time/time.h"
 #include "build/build_config.h"
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "starboard/configuration_constants.h"  // nogncheck
 #endif
 
@@ -100,7 +100,7 @@ void ThreadPoolInstance::StartWithDefaultParams() {
   // * The system is utilized maximally by foreground threads.
   // * The main thread is assumed to be busy, cap foreground workers at
   //   |num_cores - 1|.
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   const uint32_t num_processors =
       static_cast<uint32_t>(std::max(3, SysInfo::NumberOfProcessors() - 1));
   const size_t max_num_foreground_threads =
@@ -108,7 +108,7 @@ void ThreadPoolInstance::StartWithDefaultParams() {
 #else
   const size_t max_num_foreground_threads =
       static_cast<size_t>(std::max(3, SysInfo::NumberOfProcessors() - 1));
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
   Start({max_num_foreground_threads});
 }
 #endif  // !BUILDFLAG(IS_NACL)

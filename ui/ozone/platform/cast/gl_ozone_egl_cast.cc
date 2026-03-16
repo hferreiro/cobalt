@@ -149,7 +149,7 @@ bool GLOzoneEglCast::LoadGLES2Bindings(
 
   // The starboard version does not use lib_egl or lib_gles2. Lookups are done
   // via gl_proc.
-#ifndef IS_STARBOARD
+#ifndef USE_STARBOARD
   void* lib_egl = egl_platform_->GetEglLibrary();
   void* lib_gles2 = egl_platform_->GetGles2Library();
 

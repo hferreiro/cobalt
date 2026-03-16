@@ -9,7 +9,7 @@ variables.
 
 *GYP*                                     | *GN*                                                 | *GN import*
 :---------------------------------------- | :--------------------------------------------------- | :----------
-`OS` ("starboard"/other)                  | `is_starboard` (true/false)                          | (global)
+`OS` ("starboard"/other)                  | `use_starboard` (true/false)                          | (global)
 `clang` (0/1)                             | `is_clang` (true/false)                              | (global)
 `has_input_events_filter`                 | `is_internal_build` (true/false)                     | (global)
 `has_drm_system_extension`                | `is_internal_build` (true/false)                     | (global)

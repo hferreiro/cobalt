@@ -50,12 +50,12 @@ MappedMemoryManager::MappedMemoryManager(CommandBufferHelper* helper,
       max_free_bytes_(unused_memory_reclaim_limit),
       max_allocated_bytes_(SharedMemoryLimits::kNoLimit),
       tracing_id_(g_next_mapped_memory_manager_tracing_id.GetNext()) {
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   allocated_bytes_cleanup_threshold_ = SharedMemoryLimits::kNoLimit;
 #endif
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 MappedMemoryManager::MappedMemoryManager(
     CommandBufferHelper* helper,
     size_t unused_memory_reclaim_limit,
@@ -84,7 +84,7 @@ void* MappedMemoryManager::Alloc(unsigned int size,
   DCHECK(shm_id);
   DCHECK(shm_offset);
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // If the total allocated memory has exceeded our backpressure limit,
   // we must wait for the GPU to release resources.
   if (allocated_bytes_cleanup_threshold_ != SharedMemoryLimits::kNoLimit) {

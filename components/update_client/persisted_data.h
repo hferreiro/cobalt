@@ -57,7 +57,7 @@ class PersistedData {
   // -2 indicates that the |id| has an unknown value of last active date.
   virtual int GetDateLastActive(const std::string& id) const = 0;
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // Returns the starboard version of the last successfully installed update
   // for the specified |id|. "" indicates that there is no recorded version value
   // for the |id|.

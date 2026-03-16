@@ -75,8 +75,7 @@
 // condition. But yavor@ described in
 // https://github.com/youtube/cobalt/pull/8290 why additional changes are needed
 // before we can safely do that.
-#if BUILDFLAG(IS_STARBOARD) && \
-    BUILDFLAG(USE_EVERGREEN) && \
+#if BUILDFLAG(USE_STARBOARD) && BUILDFLAG(USE_EVERGREEN) && \
     BUILDFLAG(IS_STARBOARD_TOOLCHAIN)
 #include "starboard/elf_loader/evergreen_info.h"  // nogncheck
 #endif
@@ -516,8 +515,7 @@ static char *GetHex(const char *start, const char *end, uint64_t *hex) {
   return const_cast<char *>(p);
 }
 
-#if BUILDFLAG(IS_STARBOARD) && \
-    BUILDFLAG(USE_EVERGREEN) && \
+#if BUILDFLAG(USE_STARBOARD) && BUILDFLAG(USE_EVERGREEN) && \
     BUILDFLAG(IS_STARBOARD_TOOLCHAIN)
 static ATTRIBUTE_NOINLINE int OpenFile(const char* file_name) {
   int object_fd = -1;
@@ -799,8 +797,7 @@ static ATTRIBUTE_NOINLINE bool SymbolizeAndDemangle(void* pc,
   out[0] = '\0';
   SafeAppendString("(", out, out_size);
 
-#if BUILDFLAG(IS_STARBOARD) && \
-    BUILDFLAG(USE_EVERGREEN) && \
+#if BUILDFLAG(USE_STARBOARD) && BUILDFLAG(USE_EVERGREEN) && \
     BUILDFLAG(IS_STARBOARD_TOOLCHAIN)
   char* file_name = nullptr;
   EvergreenInfo evergreen_info;

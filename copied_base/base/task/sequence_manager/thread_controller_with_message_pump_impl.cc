@@ -738,7 +738,7 @@ void ThreadControllerWithMessagePumpImpl::AttachToMessagePump() {
   main_thread_only().can_change_batch_size = false;
   static_cast<MessagePumpForUI*>(pump_.get())->Attach(this);
 }
-#elif BUILDFLAG(IS_STARBOARD)
+#elif BUILDFLAG(USE_STARBOARD)
 void ThreadControllerWithMessagePumpImpl::AttachToMessagePump() {
   static_cast<MessagePumpForUI*>(pump_.get())->Attach(this);
 }

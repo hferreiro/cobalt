@@ -85,7 +85,7 @@ test("nplb") {
   # All platforms use the Starboard Media functionality.
   sources = media_sources
 
-  if (is_starboard) {
+  if (use_starboard) {
     # TODO(b/432821616): Move |starboard_platform_sources| to a source_set.
     starboard_platform_sources = [
       "align_test.cc",

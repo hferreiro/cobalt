@@ -255,7 +255,7 @@ gpu::ContextResult ImplementationBase::Initialize(
 
   mapped_memory_ = std::make_unique<MappedMemoryManager>(
       helper_, limits.mapped_memory_reclaim_limit
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       ,
       limits.mapped_memory_allocated_bytes_cleanup_threshold
 #endif

@@ -29,7 +29,7 @@
 #include "components/update_client/protocol_parser.h"
 #include "components/update_client/update_client.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "starboard/extension/installation_manager.h"
 #endif
 
@@ -109,7 +109,7 @@ class Component {
   // the update server has return a response containing an update.
   bool IsUpdateAvailable() const { return is_update_available_; }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // Stops update progress for the component and may clean resources used in its
   // current state.
   void Cancel();
@@ -163,7 +163,7 @@ class Component {
   void AppendEvent(base::Value::Dict event);
 
  private:
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   bool is_cancelled_ = false;
 #endif
   friend class MockPingManagerImpl;
@@ -197,7 +197,7 @@ class Component {
 
     ComponentState state() const { return state_; }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     // Stops update progress and may clean resources used in the current state.
     virtual void Cancel();
 #else
@@ -206,9 +206,9 @@ class Component {
         std::move(cancel_callback_).Run();
       }
     }
-#endif    
+#endif
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     // TODO(b/449242495): Change state_name() to a function
     std::string state_name() {
       switch (state_) {
@@ -337,7 +337,7 @@ class Component {
     StateDownloading(const StateDownloading&) = delete;
     StateDownloading& operator=(const StateDownloading&) = delete;
     ~StateDownloading() override;
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     void Cancel() override;
 #endif
 
@@ -467,7 +467,7 @@ class Component {
   // progress is unknown.
   int install_progress_ = -1;
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   int installation_index_ = IM_EXT_INVALID_INDEX;
 #endif
 

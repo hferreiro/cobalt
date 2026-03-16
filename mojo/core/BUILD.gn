@@ -163,7 +163,7 @@ source_set("impl_for_embedder") {
       ]
     }
 
-    if ((is_linux || is_chromeos || is_android) && !is_nacl && !is_starboard) {
+    if ((is_linux || is_chromeos || is_android) && !is_nacl && !use_starboard) {
       sources += [
         "channel_linux.cc",
         "channel_linux.h",
@@ -244,7 +244,7 @@ source_set("test_sources") {
     "trap_unittest.cc",
   ]
 
-  if (use_blink && !is_starboard) {
+  if (use_blink && !use_starboard) {
     sources += [
       "data_pipe_unittest.cc",
       "invitation_unittest.cc",

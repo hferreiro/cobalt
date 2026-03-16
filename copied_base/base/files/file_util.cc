@@ -172,7 +172,7 @@ bool Move(const FilePath& from_path, const FilePath& to_path) {
 }
 
 bool CopyFileContents(File& infile, File& outfile) {
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
   bool retry_slow = false;
   bool res =

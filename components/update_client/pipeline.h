@@ -18,7 +18,7 @@
 #include "components/update_client/update_client.h"
 #include "components/update_client/update_client_errors.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "starboard/extension/installation_manager.h"
@@ -33,7 +33,7 @@ namespace update_client {
 class Configurator;
 class CrxCache;
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 struct OperationResult {
 #if defined(IN_MEMORY_UPDATES)
   base::FilePath installation_dir;

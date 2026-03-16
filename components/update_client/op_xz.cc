@@ -24,7 +24,7 @@ namespace update_client {
 
 namespace {
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 void Done(const OperationResult& in_file_result,
           base::OnceCallback<
               void(base::expected<OperationResult, CategorizedError>)> callback,
@@ -45,7 +45,7 @@ void Done(base::OnceCallback<
       FROM_HERE,
       base::BindOnce(
           std::move(callback),
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
           [&]() -> base::expected<OperationResult, CategorizedError> {
             if (success) {
               OperationResult out_result = in_file_result;
@@ -69,7 +69,7 @@ void Done(base::OnceCallback<
 base::OnceClosure XzOperation(
     std::unique_ptr<Unzipper> unzipper,
     base::RepeatingCallback<void(base::Value::Dict)> event_adder,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     const OperationResult& in_file_result,
     base::OnceCallback<void(base::expected<OperationResult, CategorizedError>)>
         callback) {
@@ -90,7 +90,7 @@ base::OnceClosure XzOperation(
             return result;
           },
           in_file, std::move(unzipper))
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
           .Then(base::BindPostTaskToCurrentDefault(base::BindOnce(
               &Done, in_file_result, std::move(callback), event_adder, dest_file))));
 #else

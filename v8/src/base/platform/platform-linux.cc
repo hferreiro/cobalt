@@ -78,7 +78,7 @@ void OS::SignalCodeMovingGC() {
 
 void OS::AdjustSchedulingParams() {}
 
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
 void* OS::RemapShared(void* old_address, void* new_address, size_t size) {
   void* result =
       mremap(old_address, 0, size, MREMAP_FIXED | MREMAP_MAYMOVE, new_address);

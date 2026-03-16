@@ -73,7 +73,7 @@ source_set("run_all_unittests") {
     "//testing/gtest",
   ]
 
-  if (is_starboard) {
+  if (use_starboard) {
     # Replace the standard runner with the starboard test runner.
     sources -= [ "run_all_unittests.cc" ]
     sources += [ "//starboard/testing/run_all_unittests_starboard.cc" ]

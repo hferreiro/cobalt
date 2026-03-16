@@ -45,7 +45,7 @@ struct SharedMemoryLimits {
   uint32_t mapped_memory_reclaim_limit = kNoLimit;
   uint32_t mapped_memory_chunk_size = 2 * 1024 * 1024;
   uint32_t max_mapped_memory_for_texture_upload = 0;
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // The threshold for in-flight mapped memory that triggers backpressure.
   // When total allocated mapped memory exceeds this, the client will wait
   // for the GPU to finish work before allocating more. This is a tunable
@@ -82,7 +82,7 @@ struct SharedMemoryLimits {
     return limits;
   }
 
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(USE_STARBOARD)
   static SharedMemoryLimits ForDisplayCompositor(const gfx::Size& screen_size) {
     DCHECK(!screen_size.IsEmpty());
 

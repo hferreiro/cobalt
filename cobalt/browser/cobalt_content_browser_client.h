@@ -25,9 +25,9 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "starboard/window.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "ui/ozone/platform/starboard/platform_window_starboard.h"
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
 class PrefService;
 

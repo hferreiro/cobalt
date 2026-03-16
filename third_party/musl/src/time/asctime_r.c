@@ -13,7 +13,7 @@ char *__asctime_r(const struct tm *restrict tm, char *restrict buf)
 // locales, we create these char arrays to hold the English values MUSL was using.
 // This implementation is in correspondence to the POSIX specification:
 // https://pubs.opengroup.org/onlinepubs/9799919799/functions/asctime.html
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 	static char wday_name[7][4] = {
 		"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
 	};
@@ -27,15 +27,15 @@ char *__asctime_r(const struct tm *restrict tm, char *restrict buf)
 		tm->tm_mon < 0 || tm->tm_mon > 11) {
 			return NULL;
 	}
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif // BUILDFLAG(USE_STARBOARD)
     if (snprintf(buf, 26, "%.3s %.3s%3d %.2d:%.2d:%.2d %d\n",
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 		wday_name[tm->tm_wday],
 		mon_name[tm->tm_mon],
-#else // BUILDFLAG(IS_STARBOARD)
+#else // BUILDFLAG(USE_STARBOARD)
 		__nl_langinfo_l(ABDAY_1+tm->tm_wday, C_LOCALE),
 		__nl_langinfo_l(ABMON_1+tm->tm_mon, C_LOCALE),
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif // BUILDFLAG(USE_STARBOARD)
 		tm->tm_mday, tm->tm_hour,
 		tm->tm_min, tm->tm_sec,
 		1900 + tm->tm_year) >= 26)

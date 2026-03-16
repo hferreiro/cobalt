@@ -148,7 +148,7 @@ class Configurator : public base::RefCountedThreadSafe<Configurator> {
 
   virtual bool IsConnectionMetered() const = 0;
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // Returns the brand code or distribution tag that has been assigned to
   // a partner. A brand code is a 4-character string used to identify
   // installations that took place as a result of partner deals or website

@@ -86,12 +86,12 @@ void StarboardRendererWrapper::Initialize(MediaResource* media_resource,
       base::BindRepeating(
           &StarboardRendererWrapper::OnUpdateStarboardRenderingModeByStarboard,
           weak_factory_.GetWeakPtr()),
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       base::BindRepeating(&StarboardRendererWrapper::OnGetSbWindowHandle,
                           weak_factory_.GetWeakPtr())
-#else   // BUILDFLAG(IS_STARBOARD)
+#else   // BUILDFLAG(USE_STARBOARD)
       base::NullCallback()
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 #if BUILDFLAG(IS_ANDROID)
           ,
       base::BindRepeating(

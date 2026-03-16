@@ -21,7 +21,7 @@
 #include "components/update_client/update_client_errors.h"
 #include "components/update_client/utils.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "base/notreached.h"
 
 // TODO(b/448186580): Replace LOG with D(V)LOG
@@ -74,7 +74,7 @@ base::OnceClosure RequestSender::Send(
     bool use_signing,
     RequestSenderCallback request_sender_callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   LOG(INFO) << "RequestSender::Send";
 #endif
 
@@ -134,7 +134,7 @@ void RequestSender::SendInternal() {
       base::BindOnce(&RequestSender::OnNetworkFetcherComplete, this, url));
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 void RequestSender::Cancel() {
   LOG(INFO) << "RequestSender::Cancel";
   // TODO(b/431862767): enable this in a follow-up PR with the Cobalt network
@@ -205,7 +205,7 @@ void RequestSender::OnNetworkFetcherComplete(
     const std::string& header_cookie,
     int64_t xheader_retry_after_sec) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   LOG(INFO) << "RequestSender::OnNetworkFetcherComplete";
 #endif
 
@@ -252,7 +252,7 @@ GURL RequestSender::BuildUpdateUrl(const GURL& url,
   return url.ReplaceComponents(replacements);
 }
 
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
 void RequestSender::Cancel() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   HandleSendError(static_cast<int>(ServiceError::CANCELLED), 0);

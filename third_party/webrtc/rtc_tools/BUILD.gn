@@ -222,7 +222,7 @@ if (!is_component_build) {
       "//third_party/abseil-cpp/absl/strings",
     ]
 
-    if (is_cobalt && (is_starboard || use_starboard_media)) {
+    if (is_cobalt && (use_starboard || use_starboard_media)) {
       deps -= [
         "..//api/video_codecs:video_decoder_factory_template_libvpx_vp8_adapter",
         "..//api/video_codecs:video_encoder_factory_template_libvpx_vp8_adapter",

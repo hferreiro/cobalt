@@ -165,7 +165,7 @@ component("events_base") {
     }
   }
 
-  if (is_starboard) {
+  if (use_starboard) {
     sources += [ "keycodes/keyboard_code_conversion_starboard.cc" ]
   }
 
@@ -770,7 +770,7 @@ if (use_blink) {
       data_deps = [ "//third_party/angle:includes" ]
     }
 
-    if (is_starboard) {
+    if (use_starboard) {
       sources += [ "keycodes/keyboard_code_conversion_starboard_unittest.cc" ]
       deps += [ "//starboard:starboard_headers_only" ]
     }

@@ -40,7 +40,7 @@ enum class ErrorCategory {
 // stack.
 enum class CrxDownloaderError {
   NONE = 0,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   SLOT_UNAVAILABLE = 9,
 #endif
   NO_URL = 10,
@@ -132,7 +132,7 @@ enum class ServiceError {
 
 // These errors are returned with the |kUpdateCheck| error category and indicate
 // an error during an update check.
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 enum class UpdateCheckError {
   NONE = 0,
   // Using 21 that doesn't conflict with the exsiting error codes and stays away

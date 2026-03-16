@@ -29,7 +29,7 @@ gcc_toolchain("starboard") {
     is_clang = false
     current_cpu = "arm"
     current_os = "linux"
-    is_starboard = true
+    use_starboard = true
     sysroot = "$raspi_home/busterroot"
     use_cxx17 = true
     build_base_with_cpp17 = true
@@ -50,7 +50,7 @@ gcc_toolchain("native_target") {
   ar = gcc_toolchain_ar
 
   toolchain_args = {
-    is_starboard = false
+    use_starboard = false
     is_native_target_build = true
     is_clang = false
     current_cpu = "arm"

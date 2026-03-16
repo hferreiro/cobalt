@@ -41,7 +41,7 @@
 #include "components/update_client/utils.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "components/update_client/cobalt_slot_management.h"
 #include "starboard/extension/free_space.h"
 #endif
@@ -343,7 +343,7 @@ void UpdateCheckerImpl::CheckForUpdatesHelper(
                                additional_attributes, cache_contents,
                                updater_state_attributes, active_ids))
                          : std::nullopt)));
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // Reset |is_forced_update| flag to false if it is true
   config_->CompareAndSwapForcedUpdate(/*old_value=*/1, /*new_value=*/0);
 #endif

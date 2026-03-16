@@ -184,7 +184,7 @@ void UserAgentPlatformInfo::InitializePlatformDependentFieldsAndroid() {
   // Rasterizer type is gles for both Linux and Android.
   set_rasterizer_type("gles");
 }
-#elif BUILDFLAG(IS_STARBOARD)
+#elif BUILDFLAG(USE_STARBOARD)
 void UserAgentPlatformInfo::InitializePlatformDependentFieldsStarboard() {
   std::string os_name = base::SysInfo::OperatingSystemName();
   const std::string os_friendly_name =
@@ -248,10 +248,10 @@ void UserAgentPlatformInfo::InitializeUserAgentPlatformInfoFields() {
   set_brand(base::starboard::SbSysInfo::Brand());
 
   // TODO(b/443337017): Fix InitializePlatformDependentFields...() for AOSP
-// platforms, which are IS_ANDROID but also IS_STARBOARD.
+// platforms, which are IS_ANDROID but also USE_STARBOARD.
 #if BUILDFLAG(IS_ANDROID)
   InitializePlatformDependentFieldsAndroid();
-#elif BUILDFLAG(IS_STARBOARD)
+#elif BUILDFLAG(USE_STARBOARD)
   InitializePlatformDependentFieldsStarboard();
 #elif BUILDFLAG(IS_IOS_TVOS)
   InitializePlatformDependentFieldsTvOS();

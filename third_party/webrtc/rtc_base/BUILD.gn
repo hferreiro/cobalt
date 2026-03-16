@@ -360,7 +360,7 @@ rtc_library("platform_thread_types") {
     ":checks",
     ":macromagic",
   ]
-  if (is_starboard) {
+  if (use_starboard) {
     deps += [ "//starboard:starboard_headers_only" ]
   }
 }

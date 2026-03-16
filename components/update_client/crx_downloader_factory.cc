@@ -21,14 +21,14 @@
 #include "components/update_client/background_downloader_win.h"
 #elif BUILDFLAG(IS_MAC)
 #include "components/update_client/background_downloader_mac.h"
-#elif BUILDFLAG(IS_STARBOARD)
+#elif BUILDFLAG(USE_STARBOARD)
 #include "components/update_client/configurator.h"
 #endif
 
 namespace update_client {
 namespace {
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 class CrxDownloaderFactoryCobalt : public CrxDownloaderFactory {
  public:
   explicit CrxDownloaderFactoryCobalt(
@@ -53,7 +53,7 @@ scoped_refptr<CrxDownloader> CrxDownloaderFactoryCobalt::MakeCrxDownloader(
   return url_fetcher_downloader;
 }
 
-#else // BUILDFLAG(IS_STARBOARD)
+#else  // BUILDFLAG(USE_STARBOARD)
 class CrxDownloaderFactoryChromium : public CrxDownloaderFactory {
  public:
   explicit CrxDownloaderFactoryChromium(
@@ -103,11 +103,11 @@ scoped_refptr<CrxDownloader> CrxDownloaderFactoryChromium::MakeCrxDownloader(
 
   return url_fetcher_downloader;
 }
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
 }  // namespace
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 scoped_refptr<CrxDownloaderFactory> MakeCrxDownloaderFactory(
     scoped_refptr<NetworkFetcherFactory> network_fetcher_factory) {
   return base::MakeRefCounted<CrxDownloaderFactoryCobalt>(

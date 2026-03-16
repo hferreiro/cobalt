@@ -363,7 +363,7 @@ source_set("audio") {
     ]
   }
 
-  if (is_starboard) {
+  if (use_starboard) {
     sources += [
       "starboard/audio_input_stream_starboard.cc",
       "starboard/audio_input_stream_starboard.h",

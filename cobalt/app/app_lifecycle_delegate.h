@@ -25,7 +25,7 @@
 #include "starboard/event.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "ui/ozone/platform/starboard/platform_event_source_starboard.h"
 #endif
 
@@ -85,7 +85,7 @@ class AppLifecycleDelegate {
 
   std::unique_ptr<AppLifecycleRunner> runner_;
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // Ozone-specific bridge that converts Starboard events to Chromium events.
   // Non-Starboard platforms (like Android) handle these events natively.
   std::unique_ptr<ui::PlatformEventSourceStarboard> platform_event_source_;

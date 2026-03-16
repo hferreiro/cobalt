@@ -40,11 +40,11 @@ namespace {
 #if BUILDFLAG(IS_MAC)
 // The minimum size of a download to attempt it at background priority.
 constexpr int64_t kBackgroundDownloadSizeThreshold = 10'000'000; /*10 MB*/
-#elif !BUILDFLAG(IS_STARBOARD)
+#elif !BUILDFLAG(USE_STARBOARD)
 constexpr int64_t kBackgroundDownloadSizeThreshold = 0;
 #endif
 
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
 bool CanDoBackgroundDownload(bool is_foreground,
                              bool background_downloads_enabled,
                              int64_t size) {
@@ -103,7 +103,7 @@ void DownloadComplete(
 #if defined(IN_MEMORY_UPDATES)
     const std::string* crx_str,
 #endif
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     base::OnceCallback<void(base::expected<OperationResult, CategorizedError>)>
 #else
     base::OnceCallback<void(base::expected<base::FilePath, CategorizedError>)>
@@ -137,7 +137,7 @@ void DownloadComplete(
                                        .extra = download_result.extra_code1})));
     return;
   }
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   OperationResult result;
 #if defined(IN_MEMORY_UPDATES)
   result.installation_dir = download_result.installation_dir;
@@ -166,7 +166,7 @@ void HandleAvailableSpace(
 #if defined(IN_MEMORY_UPDATES)
     std::string* crx_str,
 #endif
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     base::OnceCallback<void(base::expected<OperationResult, CategorizedError>)>
 #else
     base::OnceCallback<void(base::expected<base::FilePath, CategorizedError>)>
@@ -186,7 +186,7 @@ void HandleAvailableSpace(
     return;
   }
   scoped_refptr<CrxDownloader> crx_downloader =
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       config->GetCrxDownloaderFactory()->MakeCrxDownloader(config);
 #else
       config->GetCrxDownloaderFactory()->MakeCrxDownloader(
@@ -222,7 +222,7 @@ base::OnceClosure DownloadOperation(
     std::string* crx_str,
 #endif
     CrxDownloader::ProgressCallback progress_callback,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     const OperationResult& file,
     base::OnceCallback<void(base::expected<OperationResult, CategorizedError>)>
 #else

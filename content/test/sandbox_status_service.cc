@@ -21,7 +21,7 @@ SandboxStatusService::SandboxStatusService() = default;
 SandboxStatusService::~SandboxStatusService() = default;
 
 void SandboxStatusService::GetSandboxStatus(GetSandboxStatusCallback callback) {
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
   std::move(callback).Run(
       sandbox::policy::SandboxLinux::GetInstance()->GetStatus());
 #endif

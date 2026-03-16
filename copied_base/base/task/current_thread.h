@@ -212,7 +212,8 @@ class BASE_EXPORT CurrentUIThread : public CurrentThread {
 
   CurrentUIThread* operator->() { return this; }
 
-#if BUILDFLAG(IS_OZONE) && !BUILDFLAG(IS_FUCHSIA) && !BUILDFLAG(IS_WIN) && !BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(IS_OZONE) && !BUILDFLAG(IS_FUCHSIA) && !BUILDFLAG(IS_WIN) && \
+    !BUILDFLAG(USE_STARBOARD)
   static_assert(
       std::is_base_of<WatchableIOMessagePumpPosix, MessagePumpForUI>::value,
       "CurrentThreadForUI::WatchFileDescriptor is supported only"

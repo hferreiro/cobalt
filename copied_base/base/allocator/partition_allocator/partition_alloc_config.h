@@ -160,9 +160,10 @@ static_assert(sizeof(void*) != 8, "");
   (!BUILDFLAG(PUT_REF_COUNT_IN_PREVIOUS_SLOT) && \
    defined(ARCH_CPU_LITTLE_ENDIAN))
 
-#define PA_CONFIG_HAS_MEMORY_TAGGING()              \
-  (defined(ARCH_CPU_ARM64) && defined(__clang__) && \
-   (BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_STARBOARD) || BUILDFLAG(IS_ANDROID)))
+#define PA_CONFIG_HAS_MEMORY_TAGGING()                  \
+  (defined(ARCH_CPU_ARM64) && defined(__clang__) &&     \
+   (BUILDFLAG(IS_LINUX) && !BUILDFLAG(USE_STARBOARD) || \
+    BUILDFLAG(IS_ANDROID)))
 
 #if PA_CONFIG(HAS_MEMORY_TAGGING)
 static_assert(sizeof(void*) == 8);
@@ -231,8 +232,10 @@ constexpr bool kUseLazyCommit = false;
 
 // On these platforms, lock all the partitions before fork(), and unlock after.
 // This may be required on more platforms in the future.
-#define PA_CONFIG_HAS_ATFORK_HANDLER()                                      \
-  (BUILDFLAG(IS_APPLE) || (BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_STARBOARD)) || BUILDFLAG(IS_CHROMEOS))
+#define PA_CONFIG_HAS_ATFORK_HANDLER()                   \
+  (BUILDFLAG(IS_APPLE) ||                                \
+   (BUILDFLAG(IS_LINUX) && !BUILDFLAG(USE_STARBOARD)) || \
+   BUILDFLAG(IS_CHROMEOS))
 
 // PartitionAlloc uses PartitionRootEnumerator to acquire all
 // PartitionRoots at BeforeFork and to release at AfterFork.

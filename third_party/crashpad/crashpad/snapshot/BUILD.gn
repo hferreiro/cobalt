@@ -260,7 +260,7 @@ crashpad_static_library("snapshot") {
     "../util",
   ]
 
-  if (is_starboard) {
+  if (use_starboard) {
     deps += [ "//starboard/elf_loader:evergreen_info" ]
   }
 

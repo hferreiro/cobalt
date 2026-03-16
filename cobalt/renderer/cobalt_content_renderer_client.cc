@@ -409,14 +409,14 @@ void CobaltContentRendererClient::GetStarboardRendererFactoryTraits(
   renderer_factory_traits->audio_write_duration_remote =
       base::Microseconds(kSbPlayerWriteDurationRemote);
   renderer_factory_traits->viewport_size = viewport_size_;
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // Using base::Unretained(this) is safe here because
   // CobaltContentRendererClient is a process-global singleton that outlives
   // the media pipeline, and GetSbWindowHandle() only accesses an atomic
   // member variable.
   renderer_factory_traits->get_sb_window_handle_callback = base::BindRepeating(
       &CobaltContentRendererClient::GetSbWindowHandle, base::Unretained(this));
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
   EnsureH5vccSettingsRemoteInitialized();
 

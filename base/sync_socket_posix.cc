@@ -25,7 +25,7 @@
 #include <sys/filio.h>
 #endif
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "base/logging.h"
 #include <cerrno>
 #endif
@@ -166,7 +166,7 @@ size_t SyncSocket::ReceiveWithTimeout(span<uint8_t> buffer, TimeDelta timeout) {
   return bytes_read_total;
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 size_t SyncSocket::Peek() {
   DCHECK(IsValid());
   constexpr size_t kPeekBufferBytes = 4096;

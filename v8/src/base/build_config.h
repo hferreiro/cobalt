@@ -30,7 +30,7 @@
 
 // PKU support (and by extension support for JIT code protections based on PKU)
 // is currently only available on x64 Linux.
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #define V8_HAS_PKU_SUPPORT 0
 #else
 #if defined(V8_OS_LINUX) && defined(V8_HOST_ARCH_X64)

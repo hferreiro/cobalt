@@ -80,12 +80,12 @@
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROIDTV)
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "starboard/extension/crash_handler.h"
 #include "starboard/system.h"
 #elif BUILDFLAG(IS_IOS_TVOS)
 #include "cobalt/browser/cobalt_crash_annotations.h"  // nogncheck
-#endif                                                // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 #endif  // !BUILDFLAG(IS_ANDROIDTV)
 
 namespace cobalt {
@@ -183,7 +183,7 @@ CobaltContentBrowserClient::CobaltContentBrowserClient(
       deep_link_(deep_link),
       is_visible_(is_visible) {
   COBALT_DETACH_FROM_THREAD(thread_checker_);
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // TODO: b/476434249 - Revisit if Cobalt supports multiple tabs/windows.
   ui::PlatformWindowStarboard::SetWindowCreatedCallback(
       base::BindRepeating(&CobaltContentBrowserClient::OnSbWindowCreated,
@@ -191,14 +191,14 @@ CobaltContentBrowserClient::CobaltContentBrowserClient(
   ui::PlatformWindowStarboard::SetWindowDestroyedCallback(
       base::BindRepeating(&CobaltContentBrowserClient::OnSbWindowDestroyed,
                           weak_factory_.GetWeakPtr()));
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 }
 
 CobaltContentBrowserClient::~CobaltContentBrowserClient() {
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   ui::PlatformWindowStarboard::ClearWindowCreatedCallback();
   ui::PlatformWindowStarboard::ClearWindowDestroyedCallback();
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 }
 
 // static
@@ -613,7 +613,7 @@ void CobaltContentBrowserClient::SetUserAgentCrashAnnotation() {
     return;
   }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   auto crash_handler_extension =
       static_cast<const CobaltExtensionCrashHandlerApi*>(
           SbSystemGetExtension(kCobaltExtensionCrashHandlerName));
@@ -628,7 +628,7 @@ void CobaltContentBrowserClient::SetUserAgentCrashAnnotation() {
 #elif BUILDFLAG(IS_IOS_TVOS)
   cobalt::browser::CobaltCrashAnnotations::GetInstance()->SetAnnotation(
       kUserAgentAnnotationKey, user_agent_string);
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 }
 #endif  // !BUILDFLAG(IS_ANDROIDTV)
 

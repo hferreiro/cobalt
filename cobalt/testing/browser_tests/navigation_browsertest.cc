@@ -3941,7 +3941,7 @@ IN_PROC_BROWSER_TEST_F(NavigationBrowserTest, SameDocumentLongURLPushState) {
 }
 
 // TODO(b/483488213): This test is disabled on Starboard due to failures.
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #define MAYBE_SameDocumentLongURL204PopupHashNavigation \
   DISABLED_SameDocumentLongURL204PopupHashNavigation
 #else

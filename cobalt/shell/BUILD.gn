@@ -29,7 +29,7 @@ if (is_ios) {
 shell_use_toolkit_views = toolkit_views && !is_castos
 
 support_web_tests =
-    !is_android && !(is_ios && target_platform == "tvos") && !is_starboard
+    !is_android && !(is_ios && target_platform == "tvos") && !use_starboard
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
@@ -301,7 +301,7 @@ static_library("cobalt_shell_lib") {
     }
   }
 
-  if (is_starboard) {
+  if (use_starboard) {
     sources += [
       "common/device_authentication.cc",
       "common/device_authentication.h",

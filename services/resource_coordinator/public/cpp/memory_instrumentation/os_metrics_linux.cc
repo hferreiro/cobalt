@@ -77,7 +77,7 @@ struct ModuleData {
 
 ModuleData GetMainModuleData() {
   ModuleData module_data;
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
   Dl_info dl_info;
   if (dladdr(&__ehdr_start, &dl_info)) {
     base::debug::ElfBuildIdBuffer build_id;

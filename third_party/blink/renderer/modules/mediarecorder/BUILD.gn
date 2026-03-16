@@ -49,7 +49,7 @@ blink_modules_sources("mediarecorder") {
     "//third_party/opus",
   ]
 
-  if (is_cobalt && (is_starboard || use_starboard_media)) {
+  if (is_cobalt && (use_starboard || use_starboard_media)) {
     deps -= [ "//third_party/libvpx" ]
   }
 }

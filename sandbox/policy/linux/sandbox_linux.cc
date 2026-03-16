@@ -438,7 +438,7 @@ bool SandboxLinux::InitializeSandbox(sandbox::mojom::Sandbox sandbox_type,
       << "InitializeSandbox() called after unexpected directories have been "
       << "opened. This breaks the security of the setuid sandbox.";
 
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
   InitLibcLocaltimeFunctions();
 #if !BUILDFLAG(IS_CHROMEOS)
   if (!IsUnsandboxedSandboxType(sandbox_type)) {
@@ -453,7 +453,7 @@ bool SandboxLinux::InitializeSandbox(sandbox::mojom::Sandbox sandbox_type,
     DiscourageGetaddrinfo();
   }
 #endif  // BUILDFLAG(IS_LINUX)
-#endif  // !BUILDFLAG(IS_STARBOARD)
+#endif  // !BUILDFLAG(USE_STARBOARD)
   // Attempt to limit the future size of the address space of the process.
   // Fine to call with multiple threads as we don't use RLIMIT_STACK.
   int error = 0;

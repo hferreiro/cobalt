@@ -14,7 +14,7 @@
 
 import("//build/config/ozone.gni")
 
-assert(is_starboard)
+assert(use_starboard)
 
 source_set("starboard") {
   visibility = [

@@ -51,7 +51,7 @@ int InitAndRunAllTests(int argc, char** argv) {
 }
 }  // namespace
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 // For the Starboard OS define SbEventHandle as the entry point
 SB_EXPORT STARBOARD_WRAP_SIMPLE_MAIN(InitAndRunAllTests)
 
@@ -66,4 +66,4 @@ int main(int argc, char** argv) {
 int main(int argc, char** argv) {
   return InitAndRunAllTests(argc, argv);
 }
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)

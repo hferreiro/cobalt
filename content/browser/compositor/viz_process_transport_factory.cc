@@ -50,7 +50,7 @@
 #include "ui/base/ozone_buildflags.h"
 #include "ui/base/ui_base_features.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "ui/display/screen.h"
 #endif
 
@@ -80,7 +80,7 @@ scoped_refptr<viz::ContextProviderCommandBuffer> CreateContextProvider(
   attributes.enable_gpu_rasterization = supports_gpu_rasterization;
 
   gpu::SharedMemoryLimits memory_limits =
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       gpu::SharedMemoryLimits::ForDisplayCompositor(
           display::Screen::GetScreen()->GetPrimaryDisplay().size());
 #else

@@ -18,7 +18,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "base/memory/raw_ptr.h"
 #include "components/update_client/configurator.h"
 #include "starboard/extension/installation_manager.h"
@@ -60,7 +60,7 @@ class CrxDownloader : public base::RefCountedThreadSafe<CrxDownloader> {
     int error = 0;
     int extra_code1 = 0;
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     int installation_index = IM_EXT_INVALID_INDEX;
 #endif
 #if defined(IN_MEMORY_UPDATES)
@@ -120,7 +120,7 @@ class CrxDownloader : public base::RefCountedThreadSafe<CrxDownloader> {
                      DownloadCallback download_callback);
 #endif
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   void CancelDownload();
 #endif
 
@@ -163,8 +163,8 @@ class CrxDownloader : public base::RefCountedThreadSafe<CrxDownloader> {
 #else
   virtual base::OnceClosure DoStartDownload(const GURL& url) = 0;
 #endif
-  // TODO(b/454962891): Investigate the upstream method to cancel a download 
-#if BUILDFLAG(IS_STARBOARD)
+  // TODO(b/454962891): Investigate the upstream method to cancel a download
+#if BUILDFLAG(USE_STARBOARD)
   virtual void DoCancelDownload() = 0;
 #endif
 

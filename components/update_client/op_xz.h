@@ -14,7 +14,7 @@
 #include "components/update_client/crx_cache.h"
 #include "components/update_client/patcher.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "components/update_client/pipeline.h"
 #endif
 
@@ -35,7 +35,7 @@ class Unzipper;
 base::OnceClosure XzOperation(
     std::unique_ptr<Unzipper> unzipper,
     base::RepeatingCallback<void(base::Value::Dict)> event_adder,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     const OperationResult& in_file_result,
     base::OnceCallback<void(base::expected<OperationResult, CategorizedError>)>
 #else

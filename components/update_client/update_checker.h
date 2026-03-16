@@ -16,7 +16,7 @@
 #include "components/update_client/component.h"
 #include "components/update_client/protocol_parser.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "starboard/extension/installation_manager.h"
 #endif
 

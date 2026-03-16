@@ -900,7 +900,7 @@ void BrowserMainLoop::CreateStartupTasks() {
 // Make the Starboard same behavior like Android but only in non-release
 // builds for cobalt_browsertests.
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS) || \
-    (!defined(OFFICIAL_BUILD) && BUILDFLAG(IS_STARBOARD))
+    (!defined(OFFICIAL_BUILD) && BUILDFLAG(USE_STARBOARD))
   StartupTask intercept_main_message_loop_run = base::BindOnce(
       [](BrowserMainLoop* self) {
         // Lambda to ignore the return value and always keep a clean exit code

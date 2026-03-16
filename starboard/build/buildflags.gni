@@ -14,12 +14,12 @@
 
 import("//cobalt/build/configs/cobalt.gni")
 
-if (is_starboard) {
+if (use_starboard) {
   import("//v8/gni/snapshot_toolchain.gni")
 }
 
 declare_args() {
   use_starboard_media =
       is_cobalt && current_toolchain != host_toolchain &&
-      (!is_starboard || current_toolchain != v8_snapshot_toolchain)
+      (!use_starboard || current_toolchain != v8_snapshot_toolchain)
 }

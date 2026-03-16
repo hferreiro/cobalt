@@ -22,7 +22,7 @@
 #include "components/update_client/utils.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include <stack>
 #include "base/files/file_enumerator.h"
 #include "base/notreached.h"
@@ -33,7 +33,7 @@
 
 namespace {
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 // Can't simply use base::DeletePathRecursively() because the empty dirs
 // need to be preserved.
 void CleanupDirectory(base::FilePath& dir) {
@@ -63,7 +63,7 @@ void CleanupDirectory(base::FilePath& dir) {
 
 namespace update_client {
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 UrlFetcherDownloader::UrlFetcherDownloader(
     scoped_refptr<CrxDownloader> successor,
     scoped_refptr<Configurator> config)
@@ -143,7 +143,7 @@ void UrlFetcherDownloader::SelectSlot(const GURL& url) {
 #endif  // defined(IN_MEMORY_UPDATES)
       base::Seconds(15));
 }
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
 #if defined(IN_MEMORY_UPDATES)
 base::OnceClosure UrlFetcherDownloader::DoStartDownload(const GURL& url, std::string* dst) {
@@ -177,16 +177,16 @@ base::OnceClosure UrlFetcherDownloader::DoStartDownload(const GURL& url) {
 #else  // defined(IN_MEMORY_UPDATES)
                                 base::Unretained(this), url));
 #endif  // defined(IN_MEMORY_UPDATES)
-#else  // BUILDFLAG(IS_STARBOARD)
+#else   // BUILDFLAG(USE_STARBOARD)
   base::ThreadPool::PostTaskAndReply(
       FROM_HERE, kTaskTraits,
       base::BindOnce(&UrlFetcherDownloader::CreateDownloadDir, this),
       base::BindOnce(&UrlFetcherDownloader::StartURLFetch, this, url));
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
   return base::BindOnce(&UrlFetcherDownloader::Cancel, this);
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 void UrlFetcherDownloader::DoCancelDownload() {
   LOG(INFO) << "UrlFetcherDownloader::DoCancelDownload";
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -316,7 +316,7 @@ void UrlFetcherDownloader::StartURLFetch(const GURL& url) {
 
   download_start_time_ = base::TimeTicks::Now();
 }
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
 void UrlFetcherDownloader::Cancel() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -330,7 +330,7 @@ void UrlFetcherDownloader::OnNetworkFetcherComplete(int net_error,
                                                     int64_t content_size) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   LOG(INFO) << "UrlFetcherDownloader::OnNetworkFetcherComplete";
 #endif
   const base::TimeTicks download_end_time(base::TimeTicks::Now());
@@ -344,7 +344,7 @@ void UrlFetcherDownloader::OnNetworkFetcherComplete(int net_error,
   // is not accepting requests for the moment.
   int error = -1;
   int extra_code1 = 0;
-#if BUILDFLAG(IS_STARBOARD) && !defined(IN_MEMORY_UPDATES)
+#if BUILDFLAG(USE_STARBOARD) && !defined(IN_MEMORY_UPDATES)
   if (!file_path_.empty() && !net_error && response_code_ == 200) {
 #else
   if (!net_error && response_code_ == 200) {
@@ -392,7 +392,7 @@ void UrlFetcherDownloader::OnNetworkFetcherComplete(int net_error,
 #endif
 
 #if !defined(IN_MEMORY_UPDATES)
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
   // Delete the download directory in the error cases.
   if (error && !download_dir_.empty()) {
     base::ThreadPool::PostTask(
@@ -400,12 +400,12 @@ void UrlFetcherDownloader::OnNetworkFetcherComplete(int net_error,
         base::BindOnce(IgnoreResult(&RetryDeletePathRecursively),
                        download_dir_));
     }
-#else  // BUILDFLAG(IS_STARBOARD)
+#else   // BUILDFLAG(USE_STARBOARD)
   if (error && !download_dir_.empty()) {
     // Cleanup the download dir.
     CleanupDirectory(download_dir_);
   }
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 #endif  // !defined(IN_MEMORY_UPDATES)                      
 
   main_task_runner()->PostTask(

@@ -50,7 +50,7 @@ namespace {
 
 // Runs on the original sequence. Adds events and calls the original callback.
 void PatchDone(
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     base::OnceCallback<void(base::expected<OperationResult, CategorizedError>)>
         callback,
     base::RepeatingCallback<void(base::Value::Dict)> event_adder,
@@ -69,7 +69,7 @@ void PatchDone(
 
 // Runs in the blocking pool. Deletes any files that are no longer needed.
 void VerifyAndCleanUp(
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     const OperationResult& patch_operation_result,
     base::OnceCallback<void(base::expected<OperationResult, CategorizedError>)>
 #else
@@ -98,7 +98,7 @@ void VerifyAndCleanUp(
     return;
   }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   OperationResult new_result = patch_operation_result;
   new_result.response = new_file;
   std::move(callback).Run(new_result);
@@ -114,7 +114,7 @@ void Patch(
     const base::FilePath& patch_file,
     const base::FilePath& temp_dir,
     const std::string& output_hash,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     const OperationResult& patch_operation_result,
     base::OnceCallback<void(base::expected<OperationResult, CategorizedError>)>
 #else
@@ -130,7 +130,7 @@ void Patch(
                                base::File::FLAG_WIN_EXCLUSIVE_WRITE |
                                base::File::FLAG_WIN_SHARE_DELETE |
                                base::File::FLAG_CAN_DELETE_ON_CLOSE),
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       base::BindOnce(&VerifyAndCleanUp, patch_operation_result, std::move(callback), patch_file,
 #else
       base::BindOnce(&VerifyAndCleanUp, std::move(callback), patch_file,
@@ -144,7 +144,7 @@ void CacheLookupDone(
     const base::FilePath& patch_file,
     const base::FilePath& temp_dir,
     const std::string& output_hash,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     const OperationResult& patch_operation_result,
     base::OnceCallback<void(base::expected<OperationResult, CategorizedError>)>
 #else
@@ -166,7 +166,7 @@ void CacheLookupDone(
       ->PostTask(
           FROM_HERE,
           base::BindOnce(&Patch, patcher, cache_result.value(), patch_file,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
                          temp_dir, output_hash, patch_operation_result, std::move(callback)));
 #else
                          temp_dir, output_hash, std::move(callback)));
@@ -181,7 +181,7 @@ base::OnceClosure ZucchiniOperation(
     base::RepeatingCallback<void(base::Value::Dict)> event_adder,
     const std::string& previous_hash,
     const std::string& output_hash,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     const OperationResult& patch_operation_result,
     base::OnceCallback<void(base::expected<OperationResult, CategorizedError>)>
 #else
@@ -189,13 +189,13 @@ base::OnceClosure ZucchiniOperation(
     base::OnceCallback<void(base::expected<base::FilePath, CategorizedError>)>
 #endif
         callback) {
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   const base::FilePath& patch_file = patch_operation_result.response;
 #endif
   crx_cache->GetByHash(
       previous_hash,
       base::BindOnce(&CacheLookupDone, patcher, patch_file,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
                      patch_file.DirName(), output_hash, patch_operation_result,
 #else
                      patch_file.DirName(), output_hash,

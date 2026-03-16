@@ -195,7 +195,7 @@ TEST(ElfReaderTestWithCurrentElfImage, ReadElfBuildId) {
 }
 // ReadElfBuildId is disabled on Starboard configurations due to its
 // reliance on dladdr, which Starboard does not support.
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #define MAYBE_ReadElfBuildId DISABLED_ReadElfBuildId
 #else
 #define MAYBE_ReadElfBuildId ReadElfBuildId

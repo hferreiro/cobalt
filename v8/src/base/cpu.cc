@@ -9,7 +9,7 @@
 #if V8_LIBC_MSVCRT
 #include <intrin.h>  // __cpuid()
 #endif
-#if V8_OS_LINUX && !BUILDFLAG(IS_STARBOARD)
+#if V8_OS_LINUX && !BUILDFLAG(USE_STARBOARD)
 #include <linux/auxvec.h>  // AT_HWCAP
 #endif
 #if V8_GLIBC_PREREQ(2, 16) || V8_OS_ANDROID
@@ -18,7 +18,7 @@
 #if V8_OS_QNX
 #include <sys/syspage.h>  // cpuinfo
 #endif
-#if V8_OS_LINUX && (V8_HOST_ARCH_PPC64 || BUILDFLAG(IS_STARBOARD))
+#if V8_OS_LINUX && (V8_HOST_ARCH_PPC64 || BUILDFLAG(USE_STARBOARD))
 #include <elf.h>
 #endif
 #if V8_OS_AIX

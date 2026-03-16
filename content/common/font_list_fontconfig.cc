@@ -36,7 +36,7 @@ base::Value::List GetFontList_SlowBlocking() {
 
   base::Value::List font_list;
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   std::unique_ptr<FcObjectSet, decltype(&FcObjectSetDestroy)> object_set(
       FcObjectSetBuild(FC_FAMILY, nullptr), FcObjectSetDestroy);
 #else

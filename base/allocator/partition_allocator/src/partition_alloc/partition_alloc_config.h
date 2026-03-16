@@ -167,8 +167,10 @@ constexpr bool kUseLazyCommit = false;
 
 // On these platforms, lock all the partitions before fork(), and unlock after.
 // This may be required on more platforms in the future.
-#define PA_CONFIG_HAS_ATFORK_HANDLER()                                      \
-  (PA_BUILDFLAG(IS_APPLE) || (PA_BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_STARBOARD)) || PA_BUILDFLAG(IS_CHROMEOS))
+#define PA_CONFIG_HAS_ATFORK_HANDLER()                      \
+  (PA_BUILDFLAG(IS_APPLE) ||                                \
+   (PA_BUILDFLAG(IS_LINUX) && !BUILDFLAG(USE_STARBOARD)) || \
+   PA_BUILDFLAG(IS_CHROMEOS))
 // Enable shadow metadata.
 //
 // With this flag, shadow pools will be mapped, on which writable shadow

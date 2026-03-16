@@ -56,14 +56,14 @@ std::atomic<bool> g_main_thread_tid_cache_valid = false;
 // also updated by PlatformThread::CurrentId().
 thread_local bool g_is_main_thread = true;
 
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
 class InitAtFork {
  public:
   InitAtFork() {
     pthread_atfork(nullptr, nullptr, internal::InvalidateTidCache);
   }
 };
-#endif // !BUILDFLAG(IS_STARBOARD)
+#endif  // !BUILDFLAG(USE_STARBOARD)
 
 }  // namespace
 
@@ -85,9 +85,9 @@ PlatformThreadId PlatformThread::CurrentId() {
   return pthread_mach_thread_np(pthread_self());
 #elif PA_BUILDFLAG(IS_LINUX) || PA_BUILDFLAG(IS_CHROMEOS)
 
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
   static InitAtFork init_at_fork;
-#endif // !BUILDFLAG(IS_STARBOARD)
+#endif  // !BUILDFLAG(USE_STARBOARD)
   if (g_thread_id == -1 ||
       (g_is_main_thread &&
        !g_main_thread_tid_cache_valid.load(std::memory_order_relaxed))) {

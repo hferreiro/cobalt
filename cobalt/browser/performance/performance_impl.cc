@@ -23,7 +23,7 @@
 #include "starboard/android/shared/starboard_bridge.h"
 
 using ::starboard::StarboardBridge;
-#elif BUILDFLAG(IS_STARBOARD)
+#elif BUILDFLAG(USE_STARBOARD)
 #include "starboard/common/time.h"
 #endif
 

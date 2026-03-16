@@ -25,7 +25,7 @@
 #include "components/update_client/utils.h"
 #include "third_party/zlib/google/compression_utils.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "components/update_client/pipeline.h"
 #endif
 
@@ -45,7 +45,7 @@ namespace update_client {
 
 Unpacker::Result::Result() = default;
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 Unpacker::Unpacker(const OperationResult& crx_operation_result,
                    std::unique_ptr<Unzipper> unzipper,
                    base::OnceCallback<void(const Result& result)> callback)
@@ -129,14 +129,14 @@ void Unpacker::Verify(const std::vector<uint8_t>& pk_hash,
 
 void Unpacker::BeginUnzipping() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #if defined(IN_MEMORY_UPDATES)
   unpack_path_ = result_.installation_dir;
 #else
   // The directory of path_ is the installation slot.
   unpack_path_ = path_.DirName();
 #endif  // defined(IN_MEMORY_UPDATES)
-#else  // BUILDFLAG(IS_STARBOARD)
+#else  // BUILDFLAG(USE_STARBOARD)
   if (!base::CreateNewTempDirectory(
           FILE_PATH_LITERAL("chrome_Unpacker_BeginUnzipping"), &unpack_path_)) {
     VLOG(1) << "Unable to create temporary directory for unpacking.";
@@ -144,7 +144,7 @@ void Unpacker::BeginUnzipping() {
                  ::logging::GetLastSystemErrorCode());
     return;
   }
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
   VLOG(1) << "Unpacking in: " << unpack_path_.value();
 #if defined(IN_MEMORY_UPDATES)
   unzipper_->Unzip(*result_.crx_str, unpack_path_,
@@ -210,7 +210,7 @@ void Unpacker::StoreVerifiedContentsInExtensionDir(
 
 void Unpacker::EndUnpacking(UnpackerError error, int extended_error) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
   if (error != UnpackerError::kNone && !unpack_path_.empty()) {
     RetryDeletePathRecursively(unpack_path_);
   }

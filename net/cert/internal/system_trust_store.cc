@@ -40,7 +40,7 @@
 #include "net/cert/internal/trust_store_win.h"
 #elif BUILDFLAG(IS_ANDROID)
 #include "net/cert/internal/trust_store_android.h"
-#elif BUILDFLAG(IS_STARBOARD)
+#elif BUILDFLAG(USE_STARBOARD)
 #include "base/lazy_instance.h"
 #include "net/cert/internal/trust_store_in_memory_starboard.h"
 #include "net/cert/test_root_certs.h"
@@ -384,7 +384,7 @@ void InitializeTrustStoreAndroid() {}
 
 #endif  // CHROME_ROOT_STORE_SUPPORTED
 
-#elif BUILDFLAG(IS_STARBOARD)
+#elif BUILDFLAG(USE_STARBOARD)
 
 namespace {
 

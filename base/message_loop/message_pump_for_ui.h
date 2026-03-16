@@ -14,7 +14,7 @@
 #include "base/message_loop/message_pump_win.h"
 #elif BUILDFLAG(IS_ANDROID)
 #include "base/message_loop/message_pump_android.h"
-#elif BUILDFLAG(IS_STARBOARD)
+#elif BUILDFLAG(USE_STARBOARD)
 #include "base/message_loop/message_pump_ui_starboard.h"
 #elif BUILDFLAG(IS_APPLE)
 #include "base/message_loop/message_pump.h"
@@ -35,7 +35,7 @@ namespace base {
 using MessagePumpForUI = MessagePumpForUI;
 #elif BUILDFLAG(IS_ANDROID)
 using MessagePumpForUI = MessagePumpAndroid;
-#elif BUILDFLAG(IS_STARBOARD)
+#elif BUILDFLAG(USE_STARBOARD)
 using MessagePumpForUI = MessagePumpUIStarboard;
 #elif BUILDFLAG(IS_APPLE)
 // MessagePumpForUI isn't bound to a specific impl on Mac. While each impl can

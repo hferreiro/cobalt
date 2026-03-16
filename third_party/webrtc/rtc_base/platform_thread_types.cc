@@ -35,7 +35,7 @@ typedef HRESULT(WINAPI* RTC_SetThreadDescription)(HANDLE hThread,
 // IWYU pragma: end_keep
 
 #include "build/build_config.h"
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "starboard/thread.h"  // nogncheck
 #endif
 
@@ -55,7 +55,7 @@ PlatformThreadId CurrentThreadId() {
   return syscall(__NR_gettid);
 #elif defined(__EMSCRIPTEN__)
   return static_cast<PlatformThreadId>(pthread_self());
-#elif BUILDFLAG(IS_STARBOARD)
+#elif BUILDFLAG(USE_STARBOARD)
   return SbThreadGetId();
 #else
   // Default implementation for nacl and solaris.

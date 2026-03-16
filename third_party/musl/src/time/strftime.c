@@ -10,7 +10,7 @@
 
 #include "build/build_config.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 // Helper function to help automatically free any allocated strings
 // from the heap.
 void auto_free(char **ptr) {
@@ -18,7 +18,7 @@ void auto_free(char **ptr) {
 		free(*ptr);
 	}
 }
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif // BUILDFLAG(USE_STARBOARD)
 
 static int is_leap(int y)
 {
@@ -62,9 +62,9 @@ const char *__strftime_fmt_1(char (*s)[100], size_t *l, int f, const struct tm *
 	int width = 2, def_pad = '0';
 // Some strftime operations require us to call mktime on the given tm object. Since mktime edits
 // the object given, we must make a copy for mktime to use.
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 	struct tm tm_copy = *tm;
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif // BUILDFLAG(USE_STARBOARD)
 
 	switch (f) {
 	case 'a':
@@ -121,14 +121,14 @@ const char *__strftime_fmt_1(char (*s)[100], size_t *l, int f, const struct tm *
 		val = tm->tm_yday+1;
 		width = 3;
 		goto number;
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 	case 'l':
 		def_pad = '_';
 		val = tm->tm_hour % 12;
 		if (!val) val = 12;
 		width = 2;
 		goto number;
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif // BUILDFLAG(USE_STARBOARD)
 	case 'm':
 		val = tm->tm_mon+1;
 		goto number;
@@ -151,7 +151,7 @@ const char *__strftime_fmt_1(char (*s)[100], size_t *l, int f, const struct tm *
 // MUSL's implementation makes use of tm_gmtoff, which is not a part of the
 // POSIX specification for the tm struct. As a substitute, we can make use of
 // mktime() to retrieve this value.
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 		time_t secs = mktime(&tm_copy);
 
 		if (secs == (time_t)-1) {
@@ -160,9 +160,9 @@ const char *__strftime_fmt_1(char (*s)[100], size_t *l, int f, const struct tm *
 		}
 
 		val = (unsigned long long)secs;
-#else // BUILDFLAG(IS_STARBOARD)
+#else // BUILDFLAG(USE_STARBOARD)
 		val = __tm_to_secs(tm) - tm->__tm_gmtoff;
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif // BUILDFLAG(USE_STARBOARD)
 		width = 1;
 		goto number;
 	case 'S':
@@ -217,7 +217,7 @@ const char *__strftime_fmt_1(char (*s)[100], size_t *l, int f, const struct tm *
 // While '%z' must be supported per POSIX specification, MUSL's implementation uses
 // |tm_gmtoff|, which is not a part of the POSIX specification. To address this,
 // we make use of varoius *time functions to calculate the value.
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 		time_t local = mktime(&tm_copy);
 		if (local == (time_t)-1) {
 			*l = 0;
@@ -240,10 +240,10 @@ const char *__strftime_fmt_1(char (*s)[100], size_t *l, int f, const struct tm *
 		long minutes = labs(offset_seconds % 3600) / 60;
 
 		*l = snprintf(*s, sizeof *s, "%+03ld%02ld", hours, minutes);
-#else // BUILDFLAG(IS_STARBOARD)
+#else // BUILDFLAG(USE_STARBOARD)
 		*l = snprintf(*s, sizeof *s, "%+.4ld",
 			tm->__tm_gmtoff/3600*100 + tm->__tm_gmtoff%3600/60);
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif // BUILDFLAG(USE_STARBOARD)
 		return *s;
 	case 'Z':
 		if (tm->tm_isdst < 0) {
@@ -296,14 +296,14 @@ size_t __strftime_l(char *restrict s, size_t n, const char *restrict f, const st
 //
 // The POSIX specification also requires strftime and strftime_l to set timezone
 // information, which can be done by calling tzset().
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 	tzset();
 	__attribute__((cleanup(auto_free))) char* f_copy = strdup(f);
 	if (!f_copy) { 
 		return 0;
 	}
 	f = f_copy;
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif // BUILDFLAG(USE_STARBOARD)
 	for (l=0; l<n; f++) {
 		if (!*f) {
 			s[l] = 0;
@@ -359,11 +359,11 @@ size_t __strftime_l(char *restrict s, size_t n, const char *restrict f, const st
 
 size_t strftime(char *restrict s, size_t n, const char *restrict f, const struct tm *restrict tm)
 {
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 	return __strftime_l(s, n, f, tm, LC_GLOBAL_LOCALE);
-#else // BUILDFLAG(IS_STARBOARD)
+#else // BUILDFLAG(USE_STARBOARD)
 	return __strftime_l(s, n, f, tm, CURRENT_LOCALE);
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif // BUILDFLAG(USE_STARBOARD)
 }
 
 weak_alias(__strftime_l, strftime_l);

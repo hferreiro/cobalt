@@ -38,7 +38,7 @@
 #include "content/public/app/content_main_runner.h"
 #include "starboard/event.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "base/logging/log_severity.h"
 #include "cobalt/app/cobalt_switch_defaults.h"
 #include "content/public/browser/network_service_instance.h"
@@ -159,7 +159,7 @@ void AppLifecycleDelegate::HandleEvent(const SbEvent* event) {
           client->DispatchBlur();
         }
       }
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       if (platform_event_source_) {
         platform_event_source_->HandleFocusEvent(event);
       }
@@ -173,7 +173,7 @@ void AppLifecycleDelegate::HandleEvent(const SbEvent* event) {
           client->DispatchFocus();
         }
       }
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       if (platform_event_source_) {
         platform_event_source_->HandleFocusEvent(event);
       }
@@ -198,7 +198,7 @@ void AppLifecycleDelegate::HandleEvent(const SbEvent* event) {
       content::Shell::OnUnfreeze();
       break;
     case kSbEventTypeInput:
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       if (platform_event_source_) {
         platform_event_source_->HandleEvent(event);
       }
@@ -242,7 +242,7 @@ void AppLifecycleDelegate::HandleEvent(const SbEvent* event) {
     }
     case kSbEventTypeScheduled:
     case kSbEventTypeWindowSizeChanged:
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       if (platform_event_source_) {
         platform_event_source_->HandleWindowSizeChangedEvent(event);
       }
@@ -250,7 +250,7 @@ void AppLifecycleDelegate::HandleEvent(const SbEvent* event) {
       break;
     case kSbEventTypeOsNetworkDisconnected:
     case kSbEventTypeOsNetworkConnected: {
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       auto* notifier = content::GetNetworkChangeNotifier();
       if (notifier) {
         auto* passive_notifier =
@@ -270,7 +270,7 @@ void AppLifecycleDelegate::HandleEvent(const SbEvent* event) {
       break;
     }
     case kSbEventDateTimeConfigurationChanged:
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       device::NotifyTimeZoneChangeStarboard();
 #endif
       break;
@@ -283,7 +283,7 @@ void AppLifecycleDelegate::OnStart(const SbEvent* event) {
 #endif
   SbEventStartData* data = static_cast<SbEventStartData*>(event->data);
   runner_->InitializeSystem();
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   platform_event_source_ = std::make_unique<ui::PlatformEventSourceStarboard>();
 #endif
 
@@ -308,7 +308,7 @@ void AppLifecycleDelegate::OnStop(const SbEvent* event) {
   content::Shell::OnStop();
   runner_->ShutDown();
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   platform_event_source_.reset();
 #endif
 }
@@ -322,7 +322,7 @@ int AppLifecycleDelegate::Run(absl::optional<int64_t> startup_timestamp,
 
   content::ContentMainParams params(runner_->GetMainDelegate());
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // TODO: (cobalt b/375241103) Reimplement this in a clean way.
   // Preprocess the raw command line arguments with the defaults expected by
   // Cobalt.
@@ -350,7 +350,7 @@ int AppLifecycleDelegate::Run(absl::optional<int64_t> startup_timestamp,
   // This expression exists to ensure that we apply the argument overrides
   // only on the main process, not on spawned processes such as the zygote.
 #if !BUILDFLAG(IS_ANDROID)
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   if ((argc >= 1 && !strcmp(argv[0], "/proc/self/exe")) ||
       ((argc >= 2) && !strcmp(argv[1], "--type=zygote"))) {
     params.argc = argc;

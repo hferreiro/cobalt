@@ -53,7 +53,7 @@ namespace {
 void BindPlatformWindowProvider(
     content::RenderFrameHost* rfh,
     mojo::PendingReceiver<media::mojom::PlatformWindowProvider> receiver) {
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   if (auto* client = CobaltContentBrowserClient::Get()) {
     client->AddPendingWindowReceiver(std::move(receiver));
   }

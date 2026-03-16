@@ -438,7 +438,7 @@ bool ZipReader::ExtractCurrentEntry(WriterDelegate* delegate,
     delta_bytes_read_ = 0;
   }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   if (entire_file_extracted && !delegate->Flush()) {
     return false;
   }
@@ -680,7 +680,7 @@ void FileWriterDelegate::OnError() {
   file_->SetLength(0);
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 bool FileWriterDelegate::Flush() {
   return file_->Flush();
 }

@@ -20,7 +20,7 @@
 #include <openssl/base.h>   // IWYU pragma: export
 
 #include "build/build_config.h"
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include <pthread.h>
 #endif
 

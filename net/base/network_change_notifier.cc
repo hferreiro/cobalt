@@ -32,7 +32,7 @@
 #include "net/url_request/url_request.h"
 #include "url/gurl.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "net/base/network_change_notifier_passive.h"
 #elif BUILDFLAG(IS_WIN)
 #include "net/base/network_change_notifier_win.h"
@@ -305,7 +305,7 @@ std::unique_ptr<NetworkChangeNotifier> NetworkChangeNotifier::CreateIfNeeded(
         initial_type, initial_subtype);
   }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   return std::make_unique<NetworkChangeNotifierPassive>(initial_type,
                                                         initial_subtype);
 #elif BUILDFLAG(IS_WIN)

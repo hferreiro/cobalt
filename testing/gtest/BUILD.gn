@@ -75,7 +75,7 @@ static_library("gtest") {
 # into //third_party/googletest.
 source_set("gtest_main") {
   testonly = true
-  if (is_starboard) {
+  if (use_starboard) {
     sources = [ "//starboard/common/test_main.cc" ]
     deps = [
       ":gtest",

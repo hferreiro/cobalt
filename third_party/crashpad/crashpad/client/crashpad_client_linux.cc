@@ -49,20 +49,20 @@
 #include "util/posix/signals.h"
 #include "util/posix/spawn_subprocess.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "base/notreached.h"
 #include "base/synchronization/lock.h"
 #include "starboard/elf_loader/evergreen_info.h"
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
 namespace crashpad {
 
 namespace {
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 constexpr char kEvergreenInfoKey[] = "evergreen-information";
 constexpr char kAnnotationKey[] = "annotation=%s";
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
 std::string FormatArgumentInt(const std::string& name, int value) {
   return base::StringPrintf("--%s=%d", name.c_str(), value);
@@ -72,7 +72,7 @@ std::string FormatArgumentAddress(const std::string& name, const void* addr) {
   return base::StringPrintf("--%s=%p", name.c_str(), addr);
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 std::string FormatArgumentString(const std::string& name,
                                  const std::string& value) {
   return base::StringPrintf("--%s=%s", name.c_str(), value.c_str());
@@ -100,7 +100,7 @@ void AddAnnotation(std::vector<std::string>& argv_strings,
   argv_strings.push_back(v);
   LOG(INFO) << "Added annotation: " << v;
 }
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
 #if BUILDFLAG(IS_ANDROID)
 
@@ -216,7 +216,7 @@ class SignalHandler {
     HandleCrashImpl();
   }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   bool SendEvergreenInfo(EvergreenInfo evergreen_info) {
     evergreen_info_ = evergreen_info;
     return SendEvergreenInfoImpl();
@@ -225,7 +225,7 @@ class SignalHandler {
   bool InsertAnnotation(const char* key, const char* value) {
     return InsertAnnotationImpl(key, value);
   }
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
  protected:
   SignalHandler() = default;
@@ -248,16 +248,16 @@ class SignalHandler {
     return exception_information_;
   }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   const EvergreenInfo& GetEvergreenInfo() { return evergreen_info_; }
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
   virtual void HandleCrashImpl() = 0;
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   virtual bool SendEvergreenInfoImpl() = 0;
   virtual bool InsertAnnotationImpl(const char* key, const char* value) = 0;
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
  private:
   static constexpr int32_t kDumpNotDone = 0;
@@ -335,9 +335,9 @@ class SignalHandler {
   std::atomic_flag disabled_;
 #endif
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   EvergreenInfo evergreen_info_;
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
   static SignalHandler* handler_;
 };
@@ -394,7 +394,7 @@ class LaunchAtCrashHandler : public SignalHandler {
     waitpid(pid, &status, 0);
   }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   bool SendEvergreenInfoImpl() override {
     base::AutoLock lock(argv_lock_);
 
@@ -438,7 +438,7 @@ class LaunchAtCrashHandler : public SignalHandler {
 
     return true;
   }
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
  private:
   LaunchAtCrashHandler() = default;
@@ -448,7 +448,7 @@ class LaunchAtCrashHandler : public SignalHandler {
   std::vector<std::string> argv_strings_;
   std::vector<const char*> argv_;
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // Protects access to both argv_strings_ and argv_.
   base::Lock argv_lock_;
 #endif
@@ -536,7 +536,7 @@ class RequestCrashDumpHandler : public SignalHandler {
   }
 #endif
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // TODO: b/446908034 - Cobalt: consider removing these custom methods from the
   // base class since for Chrobalt we have no immediate plans to support this
   // derived signal handler class.
@@ -551,7 +551,7 @@ class RequestCrashDumpHandler : public SignalHandler {
     NOTIMPLEMENTED();
     return false;
   }
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
  private:
   RequestCrashDumpHandler() = default;
@@ -822,7 +822,7 @@ bool CrashpadClient::StartHandlerAtCrash(
     const base::FilePath& database,
     const base::FilePath& metrics_dir,
     const std::string& url,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     const base::FilePath& ca_certificates_path,
 #endif
     const std::map<std::string, std::string>& annotations,
@@ -833,7 +833,7 @@ bool CrashpadClient::StartHandlerAtCrash(
       database,
       metrics_dir,
       url,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       ca_certificates_path,
 #endif
       annotations,
@@ -916,7 +916,7 @@ void CrashpadClient::SetCrashLoopBefore(uint64_t crash_loop_before_time) {
 }
 #endif
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 // static
 bool CrashpadClient::SendEvergreenInfoToHandler(EvergreenInfo evergreen_info) {
   if (!SignalHandler::Get()) {
@@ -936,6 +936,6 @@ bool CrashpadClient::InsertAnnotationForHandler(
 
   return SignalHandler::Get()->InsertAnnotation(key, value);
 }
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
 }  // namespace crashpad

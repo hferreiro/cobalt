@@ -46,7 +46,7 @@ void GetEGLInitDisplays(bool supports_angle_d3d,
       base::FeatureList::IsEnabled(features::kDefaultANGLEMetal);
   bool default_angle_vulkan = features::IsDefaultANGLEVulkan();
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   const char* default_software_renderer = kANGLEImplementationOpenGLESEGLName;
 #else
   const char* default_software_renderer = kANGLEImplementationSwiftShaderName;
@@ -128,9 +128,9 @@ void GetEGLInitDisplays(bool supports_angle_d3d,
 #else
       AddInitDisplay(init_displays, ANGLE_OPENGL);
       AddInitDisplay(init_displays, ANGLE_OPENGLES);
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
       AddInitDisplay(init_displays, ANGLE_OPENGLES_EGL);
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 #endif  // BUILDFLAG(IS_ANDROID)
     } else {
       if (requested_renderer == kANGLEImplementationOpenGLName) {

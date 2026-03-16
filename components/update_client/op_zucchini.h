@@ -14,7 +14,7 @@
 #include "components/update_client/crx_cache.h"
 #include "components/update_client/patcher.h"
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "components/update_client/pipeline.h"
 #endif
 
@@ -29,7 +29,7 @@ struct CategorizedError;
 // Apply a zucchini patch. `callback` is posted to the sequence
 // ZucchiniOperation was called on, with a file path containing the result of
 // the patch, if successful. If unsuccessful, `callback` is posted with an
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 // error. In either case, `patch_operation_result.response` is deleted. Returns a cancellation
 #else
 // error. In either case, `patch_file` is deleted. Returns a cancellation
@@ -41,7 +41,7 @@ base::OnceClosure ZucchiniOperation(
     base::RepeatingCallback<void(base::Value::Dict)> event_adder,
     const std::string& previous_hash,
     const std::string& output_hash,
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     const OperationResult& patch_operation_result,
     base::OnceCallback<void(base::expected<OperationResult, CategorizedError>)>
 #else

@@ -134,7 +134,7 @@ class GPU_EXPORT MappedMemoryManager {
   // to be reclaimed before allocating more memory.
   MappedMemoryManager(CommandBufferHelper* helper,
                       size_t unused_memory_reclaim_limit);
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   MappedMemoryManager(CommandBufferHelper* helper,
                       size_t unused_memory_reclaim_limit,
                       size_t allocated_bytes_cleanup_threshold);
@@ -236,7 +236,7 @@ class GPU_EXPORT MappedMemoryManager {
   // A process-unique ID used for disambiguating memory dumps from different
   // mapped memory manager.
   int tracing_id_;
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // The threshold for total in-flight mapped memory that triggers
   // backpressure. When the total size of all allocated memory chunks exceeds
   // this value, the client will wait for the GPU to finish processing commands

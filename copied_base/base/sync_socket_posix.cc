@@ -166,7 +166,7 @@ size_t SyncSocket::ReceiveWithTimeout(void* buffer,
   return bytes_read_total;
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 size_t SyncSocket::Peek() {
   DCHECK(IsValid());
   ssize_t number_chars = recv(handle_.get(), nullptr, 0, MSG_PEEK | MSG_TRUNC);

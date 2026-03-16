@@ -32,9 +32,9 @@
 #include "build/build_config.h"
 
 // TODO: b/406511608 - Cobalt: upstream this include, for strcmp.
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include <string.h>
-#endif  // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 
 namespace base {
 

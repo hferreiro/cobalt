@@ -283,7 +283,7 @@ int UtilityMain(MainFunctionParams parameters) {
 #else
       NOTREACHED();
 #endif  // BUILDFLAG(ENABLE_OOP_PRINTING)
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
     case sandbox::mojom::Sandbox::kAudio:
       pre_sandbox_hook = base::BindOnce(&audio::AudioPreSandboxHook);
       break;
@@ -320,7 +320,7 @@ int UtilityMain(MainFunctionParams parameters) {
 #endif
       break;
 #endif  // BUILDFLAG(IS_LINUX)
-#endif  // !BUILDFLAG(IS_STARBOARD)
+#endif  // !BUILDFLAG(USE_STARBOARD)
 #if BUILDFLAG(USE_LINUX_VIDEO_ACCELERATION)
     case sandbox::mojom::Sandbox::kHardwareVideoDecoding:
       pre_sandbox_hook =

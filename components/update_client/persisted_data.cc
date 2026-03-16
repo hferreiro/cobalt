@@ -62,7 +62,7 @@ class PersistedDataImpl : public PersistedData {
   int GetDateLastRollCall(const std::string& id) const override;
   int GetDateLastActive(const std::string& id) const override;
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   std::string GetLastInstalledSbVersion(const std::string& id) const override;
   std::string GetLastInstalledVersion(const std::string& id) const override;
   std::string GetUpdaterChannel(const std::string& id) const override;
@@ -209,7 +209,7 @@ std::string PersistedDataImpl::GetPingFreshness(const std::string& id) const {
   return !result.empty() ? base::StringPrintf("{%s}", result.c_str()) : result;
 }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 std::string PersistedDataImpl::GetLastInstalledSbVersion(const std::string& id) const {
   return GetString(id, "sbversion");
 }

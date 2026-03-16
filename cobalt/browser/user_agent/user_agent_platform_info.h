@@ -111,11 +111,11 @@ class UserAgentPlatformInfo {
  private:
   void InitializeUserAgentPlatformInfoFields();
 // TODO(b/443337017): Fix InitializePlatformDependentFields...() for AOSP
-// platforms, which are IS_ANDROID but also IS_STARBOARD. Consider using
+// platforms, which are IS_ANDROID but also USE_STARBOARD. Consider using
 // IS_ANDROIDTV as well.
 #if BUILDFLAG(IS_ANDROID)
   void InitializePlatformDependentFieldsAndroid();
-#elif BUILDFLAG(IS_STARBOARD)
+#elif BUILDFLAG(USE_STARBOARD)
   void InitializePlatformDependentFieldsStarboard();
 #elif BUILDFLAG(IS_IOS_TVOS)
   void InitializePlatformDependentFieldsTvOS();

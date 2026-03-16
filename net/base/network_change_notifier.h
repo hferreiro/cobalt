@@ -332,7 +332,7 @@ class NET_EXPORT NetworkChangeNotifier {
         observer_list_;
   };
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // TODO - Cobalt, b/493254621: Remove this section and align the behavior
   // with other platforms or confirm that Cobalt needs to be separated.
   static constexpr ConnectionType kDefaultInitialConnectionType =

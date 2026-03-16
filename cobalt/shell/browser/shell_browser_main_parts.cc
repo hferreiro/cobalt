@@ -66,7 +66,7 @@
 #include "ui/linux/linux_ui_factory.h"  // nogncheck
 #endif
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "cobalt/shell/common/device_authentication.h"
 #endif
 
@@ -98,7 +98,7 @@ GURL GetStartupURL() {
     }
   }
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   initial_url = GetDeviceAuthenticationSignedURL(initial_url);
 #endif
   return initial_url;

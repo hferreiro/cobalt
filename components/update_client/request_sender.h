@@ -55,7 +55,7 @@ class RequestSender : public base::RefCountedThreadSafe<RequestSender> {
       bool use_signing,
       RequestSenderCallback request_sender_callback);
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   void Cancel();
 #endif
 
@@ -94,7 +94,7 @@ class RequestSender : public base::RefCountedThreadSafe<RequestSender> {
   // Helper function to handle a non-continuable error in Send.
   void HandleSendError(int error, int retry_after_sec);
 
-#if !BUILDFLAG(IS_STARBOARD)
+#if !BUILDFLAG(USE_STARBOARD)
   // Cancels any ongoing fetches and destroys the network_fetcher_. Public
   // callers must use the callback returned from Send.
   void Cancel();

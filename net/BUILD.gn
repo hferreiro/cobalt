@@ -38,7 +38,7 @@ if (is_android) {
 # Writable mmap isn't supported on Fuchsia, so it should be bypassed.
 posix_bypass_mmap = (is_android && current_cpu != "x86") || is_fuchsia
 
-enable_built_in_dns = use_blink && !is_starboard
+enable_built_in_dns = use_blink && !use_starboard
 
 # TODO(droger): Support client auth on iOS. See http://crbug.com/145954).
 #
@@ -55,7 +55,7 @@ enable_built_in_dns = use_blink && !is_starboard
 enable_client_certificates = !is_ios || (use_blink && !is_cronet_build)
 
 # Unix sockets are not supported on iOS.
-enable_unix_sockets = (is_posix && !is_starboard) && !is_ios
+enable_unix_sockets = is_posix && !use_starboard && !is_ios
 
 # x86/x64 cast_shell builds run on regular trybots and can use python runtime
 # and remote test server. ARM cast_shell builds don't have python runtime.
@@ -88,7 +88,8 @@ use_external_gssapi = use_kerberos && !is_android && !is_win
 # recvmsg(), which are specific to the Linux kernel. Restrict the feature to
 # Starboard (assuming it corresponds to something running a Linux kernel
 # underneath) and Android (which does have a Linux kernel running underndeath).
-enable_multi_packets_per_call_quic_optimizations = is_cobalt && (is_starboard || is_android)
+enable_multi_packets_per_call_quic_optimizations =
+    is_cobalt && (use_starboard || is_android)
 
 config("net_test_config") {
   if (use_remote_test_server) {
@@ -1485,7 +1486,7 @@ component("net") {
     }
   }
 
-  if (is_android || is_chromeos || is_linux || is_starboard) {
+  if (is_android || is_chromeos || is_linux || use_starboard) {
     sources += [
       "base/network_change_notifier_passive.cc",
       "base/network_change_notifier_passive.h",
@@ -1795,7 +1796,7 @@ component("net") {
   if (is_cobalt && is_linux && !use_nss_certs) {
     sources += [ "cert/test_root_certs_builtin.cc" ]
   }
-  if (is_starboard) {
+  if (use_starboard) {
     assert(!chrome_root_store_supported)
     sources += [
       "cert/internal/trust_store_in_memory_starboard.cc",
@@ -2249,7 +2250,7 @@ static_library("test_support") {
     ]
   }
 
-  if ((is_linux || is_chromeos || is_android) && !is_starboard) {
+  if ((is_linux || is_chromeos || is_android) && !use_starboard) {
     sources += [
       "base/address_tracker_linux_test_util.cc",
       "base/address_tracker_linux_test_util.h",
@@ -2322,7 +2323,7 @@ static_library("test_support") {
       "test/spawned_test_server/remote_test_server_spawner_request.cc",
       "test/spawned_test_server/remote_test_server_spawner_request.h",
     ]
-  } else if (!is_ios && !is_starboard) {
+  } else if (!is_ios && !use_starboard) {
     sources += [
       "test/spawned_test_server/local_test_server.cc",
       "test/spawned_test_server/local_test_server.h",
@@ -3080,14 +3081,14 @@ target(_test_target_type, "net_unittests") {
     ]
   }
 
-  if (is_linux && !is_starboard) {
+  if (is_linux && !use_starboard) {
     sources += [
       "base/network_change_notifier_linux_unittest.cc",
       "proxy_resolution/proxy_config_service_linux_unittest.cc",
     ]
   }
 
-  if ((is_linux || is_chromeos) && !is_starboard) {
+  if ((is_linux || is_chromeos) && !use_starboard) {
     sources += [
       "base/address_tracker_linux_unittest.cc",
       "base/network_interfaces_linux_unittest.cc",
@@ -3198,7 +3199,7 @@ target(_test_target_type, "net_unittests") {
     sources += [ "base/sockaddr_util_posix_unittest.cc" ]
   }
 
-  if (is_android || is_chromeos || is_starboard) {
+  if (is_android || is_chromeos || use_starboard) {
     sources += [ "base/network_change_notifier_passive_unittest.cc" ]
   }
 
@@ -3355,7 +3356,7 @@ target(_test_target_type, "net_unittests") {
       "websockets/websocket_test_util.h",
     ]
 
-    if (!is_ios && !is_starboard) {
+    if (!is_ios && !use_starboard) {
       # TODO(crbug.com/40812029): iOS does not have support for the spawned test
       # server, which is used by this test. The long term plan is to add
       # websocket support to the embedded test server and when that happens,

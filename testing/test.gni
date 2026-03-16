@@ -13,9 +13,9 @@ import("//build/config/gclient_args.gni")
 import("//build/config/rts.gni")
 import("//build/rust/rust_static_library.gni")
 import("//build_overrides/build.gni")
-if (is_starboard) {
-  import("//cobalt/build/modular_executable.gni")
+if (use_starboard) {
   import("//cobalt/build/configs/hacks.gni")
+  import("//cobalt/build/modular_executable.gni")
 }
 
 declare_args() {
@@ -1025,9 +1025,10 @@ template("test") {
         data_deps += [ ":${invoker.target_name}__rts_filters" ]
       }
     }
+
     # TODO: b/384652502 - Cobalt: Remove use_custom_libc after setting
-    # is_starboard as a toolchain arg.
-  } else if (is_starboard && use_custom_libc) {
+    # use_starboard as a toolchain arg.
+  } else if (use_starboard && use_custom_libc) {
     mixed_test(target_name) {
       target_type = "modular_executable"
       forward_variables_from(invoker,

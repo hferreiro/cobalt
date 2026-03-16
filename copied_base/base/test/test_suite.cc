@@ -90,7 +90,7 @@
 #include "base/allocator/partition_alloc_support.h"
 #endif  // BUILDFLAG(USE_PARTITION_ALLOC)
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "base/test/test_support_starboard.h"
 #endif
 namespace base {
@@ -628,7 +628,7 @@ void TestSuite::Initialize() {
   InitAndroidTestMessageLoop();
 #endif  // else BUILDFLAG(IS_ANDROID)
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   InitStarboardTestMessageLoop();
 #endif
 

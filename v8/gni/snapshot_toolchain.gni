@@ -113,7 +113,7 @@ if (v8_snapshot_toolchain == "") {
 }
 
 # We need to use a non-Starboard toolchain for Starboard platforms.
-if (is_starboard && v8_snapshot_toolchain == current_toolchain) {
+if (use_starboard && v8_snapshot_toolchain == current_toolchain) {
   v8_snapshot_toolchain = host_toolchain
 }
 

@@ -65,7 +65,7 @@ config("freetype-warnings") {
   }
 }
 
-if (is_starboard) {
+if (use_starboard) {
   config("freetype_enable_brotli") {
     defines = [ "FT_CONFIG_OPTION_USE_BROTLI" ]
   }
@@ -174,7 +174,7 @@ source_set("freetype_source") {
     "//third_party/zlib",
   ]
 
-  if (is_starboard) {
+  if (use_starboard) {
     public_configs += [ ":freetype_enable_brotli" ]
     deps += [ "//third_party/brotli:dec" ]
   }

@@ -114,7 +114,7 @@ struct TimeSpan;
 }  // namespace ABI
 #endif
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 #include "starboard/common/time.h"  // nogncheck
 #endif
 
@@ -145,7 +145,7 @@ class BASE_EXPORT TimeDelta {
  public:
   constexpr TimeDelta() = default;
 
-#if BUILDFLAG(IS_STARBOARD) && 0
+#if BUILDFLAG(USE_STARBOARD) && 0
   static constexpr int64_t kHoursPerDay = 24;
   static constexpr int64_t kSecondsPerMinute = 60;
   static constexpr int64_t kMinutesPerHour = 60;
@@ -1467,7 +1467,7 @@ class BASE_EXPORT ThreadTicks : public time_internal::TimeBase<ThreadTicks> {
 
   // Returns true if ThreadTicks::Now() is supported on this system.
   [[nodiscard]] static bool IsSupported() {
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
     return ::starboard::CurrentMonotonicThreadTime() != 0;
 #elif (defined(_POSIX_THREAD_CPUTIME) && (_POSIX_THREAD_CPUTIME >= 0)) || \
     BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)

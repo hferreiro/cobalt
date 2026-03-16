@@ -53,7 +53,7 @@ class WriterDelegate {
   // can then remove and clean up the partially extracted data.
   virtual void OnError() {}
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // Invoked at the end of the entry extraction to flush to persistent storage.
   // Returns failure on failure to flush.
   virtual bool Flush() { return true; }
@@ -372,7 +372,7 @@ class FileWriterDelegate : public WriterDelegate {
   // Empties the file to avoid leaving garbage data in it.
   void OnError() override;
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
   // Flush to persistent storage.
   bool Flush() override;
 #endif

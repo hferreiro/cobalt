@@ -18,7 +18,7 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include <sys/system_properties.h>
-#elif BUILDFLAG(IS_STARBOARD)
+#elif BUILDFLAG(USE_STARBOARD)
 #include "base/system/sys_info.h"
 #include "starboard/common/system_property.h"
 using starboard::GetSystemPropertyString;
@@ -31,13 +31,13 @@ using starboard::GetSystemPropertyString;
 #include "base/notimplemented.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
-#if BUILDFLAG(IS_STARBOARD)
+#if BUILDFLAG(USE_STARBOARD)
 namespace base {
 std::string SysInfo::HardwareModelName() {
   return GetSystemPropertyString(kSbSystemPropertyModelName);
 }
 }
-#endif // BUILDFLAG(IS_STARBOARD)
+#endif  // BUILDFLAG(USE_STARBOARD)
 namespace base {
 namespace starboard {
 
@@ -84,7 +84,7 @@ std::string SbSysInfo::OSFriendlyName() {
   return "AOSP";
 }
 
-#elif BUILDFLAG(IS_STARBOARD)
+#elif BUILDFLAG(USE_STARBOARD)
 std::string SbSysInfo::OriginalDesignManufacturer() {
   return GetSystemPropertyString(kSbSystemPropertySystemIntegratorName);
 }
