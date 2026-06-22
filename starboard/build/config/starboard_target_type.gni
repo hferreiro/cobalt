@@ -62,6 +62,7 @@ template("starboard_platform_target") {
           "-Wl,--wrap=open",
           "-Wl,--wrap=openat",
           "-Wl,--wrap=stat",
+          "-Wl,--wrap=writev",
         ]
       }
     }
