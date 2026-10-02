@@ -81,16 +81,15 @@ base::FilePath GetPathToCrashpadHandlerBinary() {
     LOG(ERROR) << "Couldn't retrieve path to crashpad_handler binary.";
     return base::FilePath("");
   }
+#if defined(OS_ANDROID)
+  return base::FilePath(exe_path.data()).Append("libcrashpad_handler.so");
+#else   // defined(OS_ANDROID)
   base::FilePath exe_dir_path = base::FilePath(exe_path.data()).DirName();
   std::string handler_path(exe_dir_path.value());
   handler_path.push_back(kSbFileSepChar);
-#if defined(OS_ANDROID)
-  // Path to the extracted native library.
-  handler_path.append("arm/libcrashpad_handler.so");
-#else   // defined(OS_ANDROID)
   handler_path.append("native_target/crashpad_handler");
-#endif  // defined(OS_ANDROID)
   return base::FilePath(handler_path.c_str());
+#endif  // defined(OS_ANDROID)
 }
 
 base::FilePath GetDatabasePath() {
@@ -334,9 +333,17 @@ void InstallCrashpadHandler(const std::string& ca_certificates_path) {
 
   client->SetUnhandledSignals({});
 
+#if defined(OS_ANDROID)
+  // The CA certificates live inside the APK as assets. Use the Android system
+  // CA store instead.
+  const base::FilePath handler_ca_certificates_path;
+#else   // defined(OS_ANDROID)
+  const base::FilePath handler_ca_certificates_path(ca_certificates_path);
+#endif  // defined(OS_ANDROID)
+
   if (!client->StartHandlerAtCrash(handler_path, database_directory_path,
                                    default_metrics_dir, kUploadUrl,
-                                   base::FilePath(ca_certificates_path.c_str()),
+                                   handler_ca_certificates_path,
                                    default_annotations, default_arguments)) {
     LOG(ERROR) << "Failed to install the signal handler";
     RecordStatus(
