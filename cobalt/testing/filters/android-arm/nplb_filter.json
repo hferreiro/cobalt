@@ -7,7 +7,7 @@
     "MultiplePlayerTest.*",
     "MultiplePlayerTests/*",
     "SbPlayerGetAudioConfigurationTests/*",
-    "SbPlayerGetMediaTimeTests/*",
+    "SbPlayerGetMediaTimeTests/*widevine*",
     "SbPlayerWriteSampleTests/*",
     "SbDrmSessionTest.*",
     "SbSocketAddressTypes/*",

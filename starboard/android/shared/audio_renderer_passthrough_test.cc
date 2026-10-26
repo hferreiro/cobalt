@@ -33,6 +33,7 @@
 #include "starboard/drm.h"
 #include "starboard/media.h"
 #include "starboard/player.h"
+#include "starboard/shared/starboard/media/media_util.h"
 #include "starboard/shared/starboard/player/filter/testing/test_util.h"
 #include "starboard/shared/starboard/player/input_buffer_internal.h"
 #include "starboard/shared/starboard/player/job_queue.h"
@@ -40,6 +41,9 @@
 
 namespace starboard {
 namespace {
+
+// Each AC-3 syncframe has 6 blocks that provide 256 new audio samples.
+constexpr int kAc3SyncFrameAudioSampleCount = 6 * 256;
 
 AudioStreamInfo CreateAudioStreamInfo(
     SbMediaAudioCodec codec = kSbMediaAudioCodecAc3,
@@ -104,19 +108,21 @@ class ThrottledAudioTrack : public FakeAudioTrack {
 };
 
 TEST(AudioRendererPassthroughStaticTest, ParseAc3SyncframeAudioSampleCount) {
-  // Too small buffer (< 6 bytes) returns default 1536 samples.
+  // Too small buffer (< 6 bytes) returns default
+  // `kAc3SyncFrameAudioSampleCount` samples.
   std::vector<uint8_t> short_buffer = {0x0B, 0x77, 0, 0, 0};
   EXPECT_EQ(
       AudioRendererPassthrough::ParseAc3SyncframeAudioSampleCountForTesting(
           short_buffer),
-      1536);
+      kAc3SyncFrameAudioSampleCount);
 
-  // AC-3 bitstream ID <= 10 (e.g. 8) returns 1536 samples.
+  // AC-3 bitstream ID <= 10 (e.g. 8) returns `kAc3SyncFrameAudioSampleCount`
+  // samples.
   auto ac3_frame = CreateAc3Frame(/*is_eac3=*/false, /*numblkscod=*/0);
   EXPECT_EQ(
       AudioRendererPassthrough::ParseAc3SyncframeAudioSampleCountForTesting(
           ac3_frame),
-      1536);
+      kAc3SyncFrameAudioSampleCount);
 
   // E-AC-3: numblkscod 0, 1, 2, 3 correspond to 1, 2, 3, 6 blocks of 256
   // samples.
@@ -460,6 +466,35 @@ TEST_F(AudioRendererPassthroughTest, SeekAndReuseAudioTrack) {
   EXPECT_TRUE(WaitForCondition([&] {
     return fake_audio_track_->play_state() == AudioTrack::PlayState::kPlaying;
   }));
+}
+
+TEST_F(AudioRendererPassthroughTest, DropFramesBeforeSeekTime) {
+  const int64_t kFrameDuration = AudioFramesToDuration(
+      kAc3SyncFrameAudioSampleCount, audio_stream_info_.samples_per_second);
+  const int64_t kSeekTime = 1'000'000;
+  renderer_->Seek(kSeekTime);
+
+  // The first frame ends exactly at the seek time and is dropped. The second
+  // one ends after it and is kept.
+  const int64_t kFirstKeptTimestamp = kSeekTime - kFrameDuration / 2;
+  renderer_->WriteSamples(
+      {CreateInputBuffer(frame_, kSeekTime - kFrameDuration),
+       CreateInputBuffer(frame_, kFirstKeptTimestamp),
+       CreateInputBuffer(frame_, kSeekTime)});
+  renderer_->WriteEndOfStream();
+  renderer_->Play();
+  ASSERT_TRUE(WaitForCondition([&] { return ended_count_ > 0; }));
+
+  // Once the end of stream is played, the media time is the end of the last
+  // frame kept.
+  bool is_playing = false;
+  bool is_eos_played = false;
+  bool is_underflow = false;
+  double playback_rate = 0.0;
+  int64_t media_time = renderer_->GetCurrentMediaTime(
+      &is_playing, &is_eos_played, &is_underflow, &playback_rate);
+  EXPECT_TRUE(is_eos_played);
+  EXPECT_EQ(media_time, kFirstKeptTimestamp + 2 * kFrameDuration);
 }
 
 TEST_F(AudioRendererPassthroughTest, AudioDeviceCapabilityChanged) {
